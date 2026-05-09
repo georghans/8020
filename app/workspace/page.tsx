@@ -1,4 +1,5 @@
 import { getServerSession } from "next-auth";
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import { authOptions } from "@/auth";
 import { SignOutButton } from "../auth-actions";
@@ -35,6 +36,20 @@ export default async function WorkspacePage() {
               {session.user?.email ?? "No email returned"}
             </p>
           </div>
+        </section>
+
+        <section className="rounded-md border border-zinc-200 bg-white p-5">
+          <h2 className="text-base font-semibold">Chat</h2>
+          <p className="mt-2 text-sm leading-6 text-zinc-600">
+            Start a protected LiteLLM chat session with the models available to
+            this workspace.
+          </p>
+          <Link
+            href="/workspace/chat"
+            className="mt-4 inline-flex h-10 items-center rounded-md bg-zinc-950 px-4 text-sm font-medium text-white transition hover:bg-zinc-800"
+          >
+            Open chat
+          </Link>
         </section>
       </main>
     </div>
