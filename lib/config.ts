@@ -2,9 +2,9 @@ import {
   BookOpenText,
   Brain,
   Code,
-  Lightbulb,
-  Notepad,
-  PaintBrush,
+  LightbulbIcon,
+  NotepadIcon,
+  PaintBrushIcon,
   Sparkle,
 } from "@phosphor-icons/react/dist/ssr"
 
@@ -24,16 +24,14 @@ export const APP_NAME = "8020"
 
 export const SUGGESTIONS = [
   {
-    label: "Summary",
-    highlight: "Summarize",
-    prompt: `Summarize`,
+    label: "Rechnungen analysieren",
+    highlight: "Rechnungen analysieren",
+    prompt: `Rechnungnen analysieren`,
     items: [
-      "Summarize the French Revolution",
-      "Summarize the plot of Inception",
-      "Summarize World War II in 5 sentences",
-      "Summarize the benefits of meditation",
+      "Rechnungen des letzen Monats zusammenfassen",
+      "Rechnungen durchgehen und Übersicht über Ausgaben und Einnahmen geben",
     ],
-    icon: Notepad,
+    icon: NotepadIcon,
   },
   {
     label: "Code",
@@ -57,7 +55,7 @@ export const SUGGESTIONS = [
       "Design 5 great font pairings for a landing page",
       "Design better CTAs with useful tips",
     ],
-    icon: PaintBrush,
+    icon: PaintBrushIcon,
   },
   {
     label: "Research",
@@ -105,7 +103,7 @@ export const SUGGESTIONS = [
       "Explain how a neural network works",
       "Explain the difference between AI and AGI",
     ],
-    icon: Lightbulb,
+    icon: LightbulbIcon,
   },
 ]
 
