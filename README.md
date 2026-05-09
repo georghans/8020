@@ -1,17 +1,41 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+This is a [Next.js](https://nextjs.org) app with local Keycloak login through NextAuth.
+
+## Local Keycloak auth
+
+Create a Keycloak client in your deployed Keycloak realm at `https://auth.dev.8o2o.de`:
+
+- Client type: OpenID Connect
+- Client ID: `app8020-local`
+- Client authentication: On
+- Valid redirect URI: `http://localhost:3000/api/auth/callback/keycloak`
+- Valid post logout redirect URI: `http://localhost:3000/*`
+- Web origin: `http://localhost:3000`
+
+Create `.env.local`:
+
+```bash
+NEXTAUTH_URL=http://localhost:3000
+NEXTAUTH_SECRET=replace-with-output-from-openssl-rand-base64-32
+
+KEYCLOAK_CLIENT_ID=app8020-local
+KEYCLOAK_CLIENT_SECRET=replace-with-keycloak-client-secret
+KEYCLOAK_ISSUER=https://auth.dev.8o2o.de/realms/replace-with-your-realm
+```
+
+Generate the secret with:
+
+```bash
+openssl rand -base64 32
+```
+
+The issuer must be the realm URL that your Next.js app can reach from the host. For your deployed Keycloak, that should be `https://auth.dev.8o2o.de/realms/<realm-name>`.
 
 ## Getting Started
 
 First, run the development server:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+bun run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
