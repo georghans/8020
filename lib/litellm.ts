@@ -13,6 +13,36 @@ type LiteLLMModelResponse = {
   }>;
 };
 
+export type OpenRouterModel = {
+  id: string;
+  name: string;
+  description?: string;
+  context_length?: number;
+  created?: number;
+  pricing?: {
+    prompt?: number;
+    completion?: number;
+    image?: number;
+    request?: number;
+  };
+  architecture?: {
+    modality?: string;
+    tokenizer?: string;
+    instruct_type?: string | null;
+  };
+  top_provider?: {
+    context_length?: number;
+    max_completion_tokens?: number | null;
+    is_moderated?: boolean;
+  };
+  per_request_limits?: unknown;
+  supported_parameters?: string[];
+};
+
+type OpenRouterModelsResponse = {
+  data?: OpenRouterModel[];
+};
+
 function getLiteLLMConfig() {
   const baseUrl = process.env.LITELLM_BASE_URL;
   const apiKey = process.env.LITELLM_API_KEY;
@@ -62,4 +92,23 @@ export async function getLiteLLMModels(): Promise<LiteLLMModel[]> {
 
     return models;
   }, []);
+}
+
+/**
+ * Fetch the full model catalog from OpenRouter.
+ * This endpoint is public and does not require authentication.
+ */
+export async function getOpenRouterModels(): Promise<OpenRouterModel[]> {
+  const response = await fetch("https://openrouter.ai/api/v1/models", {
+    cache: "no-store",
+  });
+
+  if (!response.ok) {
+    throw new Error(
+      `OpenRouter models request failed with ${response.status}`
+    );
+  }
+
+  const payload = (await response.json()) as OpenRouterModelsResponse;
+  return payload.data ?? [];
 }

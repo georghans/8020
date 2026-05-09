@@ -32,10 +32,10 @@ export const searchDocuments = tool({
   description: "Search documents in Paperless using full-text search. Returns document titles, dates, correspondents, and tags.",
   parameters: z.object({
     query: z.string().describe("Search query string"),
-    page: z.number().optional().describe("Page number for pagination").default(1),
+    page: z.number().describe("Page number for pagination"),
   }),
   execute: async ({ query, page }) => {
-    const data = await paperlessFetch(`/api/documents/?query=${encodeURIComponent(query)}&page=${page}`)
+    const data = await paperlessFetch(`/api/documents/?query=${encodeURIComponent(query)}&page=${page ?? 1}`)
     return {
       count: data.count,
       results: data.results.map((doc: {
@@ -70,11 +70,11 @@ export const getDocument = tool({
 export const listDocuments = tool({
   description: "List recent documents from Paperless with pagination.",
   parameters: z.object({
-    page: z.number().optional().describe("Page number").default(1),
-    pageSize: z.number().optional().describe("Items per page").default(20),
+    page: z.number().describe("Page number"),
+    pageSize: z.number().describe("Items per page"),
   }),
   execute: async ({ page, pageSize }) => {
-    const data = await paperlessFetch(`/api/documents/?page=${page}&page_size=${pageSize}`)
+    const data = await paperlessFetch(`/api/documents/?page=${page ?? 1}&page_size=${pageSize ?? 20}`)
     return {
       count: data.count,
       results: data.results.map((doc: {
