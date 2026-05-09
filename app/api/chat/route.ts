@@ -1,86 +1,139 @@
-import { createOpenAI } from "@ai-sdk/openai";
-import { streamText, type ModelMessage } from "ai";
-import { getServerSession } from "next-auth";
-import { NextResponse } from "next/server";
-
-import { authOptions } from "@/auth";
+import { SYSTEM_PROMPT_DEFAULT } from "@/lib/config"
+import { getAllModels } from "@/lib/models"
+import { Attachment } from "@ai-sdk/ui-utils"
+import { Message as MessageAISDK, streamText, ToolSet } from "ai"
 import {
-  getLiteLLMModels,
-  getLiteLLMProviderConfig,
-} from "@/lib/litellm";
+  incrementMessageCount,
+  logUserMessage,
+  storeAssistantMessage,
+  validateAndTrackUsage,
+} from "./api"
+import { createErrorResponse, extractErrorMessage } from "./utils"
 
-export const maxDuration = 60;
+export const maxDuration = 60
 
 type ChatRequest = {
-  messages?: ModelMessage[];
-  model?: string;
-};
-
-function isSupportedMessage(message: ModelMessage) {
-  return (
-    (message.role === "user" || message.role === "assistant") &&
-    typeof message.content === "string" &&
-    message.content.length > 0
-  );
+  messages: MessageAISDK[]
+  chatId: string
+  userId: string
+  model: string
+  isAuthenticated: boolean
+  systemPrompt: string
+  enableSearch: boolean
+  message_group_id?: string
+  editCutoffTimestamp?: string
 }
 
 export async function POST(req: Request) {
-  const session = await getServerSession(authOptions);
-
-  if (!session) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
-
-  let body: ChatRequest;
   try {
-    body = (await req.json()) as ChatRequest;
-  } catch {
-    return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
-  }
+    const {
+      messages,
+      chatId,
+      userId,
+      model,
+      isAuthenticated,
+      systemPrompt,
+      enableSearch,
+      message_group_id,
+      editCutoffTimestamp,
+    } = (await req.json()) as ChatRequest
 
-  const { messages, model } = body;
-
-  if (!model || !Array.isArray(messages) || messages.length === 0) {
-    return NextResponse.json(
-      { error: "Missing messages or model" },
-      { status: 400 },
-    );
-  }
-
-  if (!messages.every(isSupportedMessage)) {
-    return NextResponse.json(
-      { error: "Unsupported message format" },
-      { status: 400 },
-    );
-  }
-
-  try {
-    const models = await getLiteLLMModels();
-    const requestedModel = models.find((availableModel) => {
-      return availableModel.id === model;
-    });
-
-    if (!requestedModel) {
-      return NextResponse.json({ error: "Unknown model" }, { status: 400 });
+    if (!messages || !chatId || !userId) {
+      return new Response(
+        JSON.stringify({ error: "Error, missing information" }),
+        { status: 400 }
+      )
     }
 
-    const { apiKey, baseUrl } = getLiteLLMProviderConfig();
-    const litellm = createOpenAI({
-      apiKey,
-      baseURL: baseUrl,
-    });
+    const supabase = await validateAndTrackUsage({
+      userId,
+      model,
+      isAuthenticated,
+    })
+
+    // Increment message count for successful validation
+    if (supabase) {
+      await incrementMessageCount({ supabase, userId })
+    }
+
+    const userMessage = messages[messages.length - 1]
+
+    // If editing, delete messages from cutoff BEFORE saving the new user message
+    if (supabase && editCutoffTimestamp) {
+      try {
+        await supabase
+          .from("messages")
+          .delete()
+          .eq("chat_id", chatId)
+          .gte("created_at", editCutoffTimestamp)
+      } catch (err) {
+        console.error("Failed to delete messages from cutoff:", err)
+      }
+    }
+
+    if (supabase && userMessage?.role === "user") {
+      await logUserMessage({
+        supabase,
+        userId,
+        chatId,
+        content: userMessage.content,
+        attachments: userMessage.experimental_attachments as Attachment[],
+        model,
+        isAuthenticated,
+        message_group_id,
+      })
+    }
+
+    const allModels = await getAllModels()
+    const modelConfig = allModels.find((m) => m.id === model)
+
+    if (!modelConfig || !modelConfig.apiSdk) {
+      throw new Error(`Model ${model} not found`)
+    }
+
+    const effectiveSystemPrompt = systemPrompt || SYSTEM_PROMPT_DEFAULT
 
     const result = streamText({
-      model: litellm.chat(model),
-      messages,
-    });
+      model: modelConfig.apiSdk(undefined, { enableSearch }),
+      system: effectiveSystemPrompt,
+      messages: messages,
+      tools: {} as ToolSet,
+      maxSteps: 10,
+      onError: (err: unknown) => {
+        console.error("Streaming error occurred:", err)
+        // Don't set streamError anymore - let the AI SDK handle it through the stream
+      },
 
-    return result.toTextStreamResponse();
-  } catch (error) {
-    console.error("Failed to stream LiteLLM chat response:", error);
-    return NextResponse.json(
-      { error: "Failed to stream chat response" },
-      { status: 500 },
-    );
+      onFinish: async ({ response }) => {
+        if (supabase) {
+          await storeAssistantMessage({
+            supabase,
+            chatId,
+            messages:
+              response.messages as unknown as import("@/app/types/api.types").Message[],
+            message_group_id,
+            model,
+          })
+        }
+      },
+    })
+
+    return result.toDataStreamResponse({
+      sendReasoning: true,
+      sendSources: true,
+      getErrorMessage: (error: unknown) => {
+        console.error("Error forwarded to client:", error)
+        return extractErrorMessage(error)
+      },
+    })
+  } catch (err: unknown) {
+    console.error("Error in /api/chat:", err)
+    const error = err as {
+      code?: string
+      message?: string
+      statusCode?: number
+    }
+
+    return createErrorResponse(error)
   }
 }

@@ -1,24 +1,43 @@
-import { getServerSession } from "next-auth";
-import { NextResponse } from "next/server";
-
-import { authOptions } from "@/auth";
-import { getLiteLLMModels } from "@/lib/litellm";
+import { getAllModels, refreshModelsCache } from "@/lib/models"
+import { authErrorResponse, requireUser } from "@/lib/supabase/server"
+import { NextResponse } from "next/server"
 
 export async function GET() {
-  const session = await getServerSession(authOptions);
-
-  if (!session) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
-
   try {
-    const models = await getLiteLLMModels();
-    return NextResponse.json({ models });
+    await requireUser()
+    const models = await getAllModels()
+    return NextResponse.json({ models })
   } catch (error) {
-    console.error("Failed to fetch LiteLLM models:", error);
+    const authResponse = authErrorResponse(error)
+    if (authResponse) return authResponse
+
+    console.error("Error fetching models:", error)
     return NextResponse.json(
       { error: "Failed to fetch models" },
-      { status: 500 },
-    );
+      { status: 500 }
+    )
+  }
+}
+
+export async function POST() {
+  try {
+    await requireUser()
+    refreshModelsCache()
+    const models = await getAllModels()
+    return NextResponse.json({
+      message: "Models cache refreshed",
+      models,
+      timestamp: new Date().toISOString(),
+      count: models.length,
+    })
+  } catch (error) {
+    const authResponse = authErrorResponse(error)
+    if (authResponse) return authResponse
+
+    console.error("Failed to refresh models:", error)
+    return NextResponse.json(
+      { error: "Failed to refresh models" },
+      { status: 500 }
+    )
   }
 }
