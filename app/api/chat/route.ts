@@ -1,7 +1,7 @@
 import { SYSTEM_PROMPT_DEFAULT } from "@/lib/config"
 import { getAllModels } from "@/lib/models"
 import { Attachment } from "@ai-sdk/ui-utils"
-import { Message as MessageAISDK, streamText, ToolSet } from "ai"
+import { Message as MessageAISDK, streamText } from "ai"
 import {
   incrementMessageCount,
   logUserMessage,
@@ -9,6 +9,7 @@ import {
   validateAndTrackUsage,
 } from "./api"
 import { createErrorResponse, extractErrorMessage } from "./utils"
+import { paperlessTools } from "@/lib/paperless-tools"
 
 export const maxDuration = 60
 
@@ -51,14 +52,12 @@ export async function POST(req: Request) {
       isAuthenticated,
     })
 
-    // Increment message count for successful validation
     if (supabase) {
       await incrementMessageCount({ supabase, userId })
     }
 
     const userMessage = messages[messages.length - 1]
 
-    // If editing, delete messages from cutoff BEFORE saving the new user message
     if (supabase && editCutoffTimestamp) {
       try {
         await supabase
@@ -97,11 +96,10 @@ export async function POST(req: Request) {
       model: modelConfig.apiSdk(undefined, { enableSearch }),
       system: effectiveSystemPrompt,
       messages: messages,
-      tools: {} as ToolSet,
+      tools: paperlessTools,
       maxSteps: 10,
       onError: (err: unknown) => {
         console.error("Streaming error occurred:", err)
-        // Don't set streamError anymore - let the AI SDK handle it through the stream
       },
 
       onFinish: async ({ response }) => {
