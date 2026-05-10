@@ -20,6 +20,7 @@ import {
 import { DropdownMenuItem } from "@/components/ui/dropdown-menu"
 import { APP_NAME } from "@/lib/config"
 import { Info } from "@phosphor-icons/react"
+import { useTranslations } from "next-intl"
 import Image from "next/image"
 import { AppInfoContent } from "./app-info-content"
 
@@ -28,12 +29,13 @@ type AppInfoTriggerProps = {
 }
 
 export function AppInfoTrigger({ trigger }: AppInfoTriggerProps) {
+  const t = useTranslations("UserMenu")
   const isMobile = useBreakpoint(768)
 
   const defaultTrigger = (
     <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
       <Info className="size-4" />
-      About {APP_NAME}
+      {t("about", { appName: APP_NAME })}
     </DropdownMenuItem>
   )
 

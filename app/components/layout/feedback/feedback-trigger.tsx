@@ -8,9 +8,11 @@ import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer"
 import { DropdownMenuItem } from "@/components/ui/dropdown-menu"
 import { isSupabaseEnabled } from "@/lib/supabase/config"
 import { Question } from "@phosphor-icons/react"
+import { useTranslations } from "next-intl"
 import { useState } from "react"
 
 export function FeedbackTrigger() {
+  const t = useTranslations("UserMenu")
   const { user } = useUser()
   const isMobile = useBreakpoint(768)
   const [isOpen, setIsOpen] = useState(false)
@@ -26,7 +28,7 @@ export function FeedbackTrigger() {
   const trigger = (
     <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
       <Question className="size-4" />
-      <span>Feedback</span>
+      <span>{t("feedback")}</span>
     </DropdownMenuItem>
   )
 

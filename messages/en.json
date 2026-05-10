@@ -210,5 +210,10 @@
     "creating": "Creating...",
     "createProject": "Create Project",
     "failedToCreateProject": "Failed to create project"
+  },
+  "UserMenu": {
+    "profile": "Profile",
+    "feedback": "Feedback",
+    "about": "About {appName}"
   }
 }

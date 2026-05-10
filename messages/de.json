@@ -118,7 +118,7 @@
     }
   },
   "Chat": {
-    "onboarding": "Was liegt dir auf dem Herzen?"
+    "onboarding": "Was gibt's heute zu tun?"
   },
   "Project": {
     "recentChats": "Letzte Chats",
@@ -210,5 +210,10 @@
     "creating": "Wird erstellt...",
     "createProject": "Projekt erstellen",
     "failedToCreateProject": "Projekt konnte nicht erstellt werden"
+  },
+  "UserMenu": {
+    "profile": "Profil",
+    "feedback": "Feedback",
+    "about": "Über {appName}"
   }
 }
