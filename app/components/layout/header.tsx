@@ -1,7 +1,6 @@
 "use client"
 
 import { AppInfoTrigger } from "@/app/components/layout/app-info/app-info-trigger"
-import { ButtonNewChat } from "@/app/components/layout/button-new-chat"
 import { useBreakpoint } from "@/app/hooks/use-breakpoint"
 import { AppIcon } from "@/components/icons/app-icon"
 import { Button } from "@/components/ui/button"
@@ -33,9 +32,8 @@ export function Header() {
               {isMobile && <HeaderSidebarTrigger />}
             </div>
           </div>
-          <div />
-          {!isLoggedIn ? (
-            <div className="pointer-events-auto flex flex-1 items-center justify-end gap-4">
+          {!isLoggedIn && (
+            <div className="pointer-events-auto flex items-center justify-end gap-4">
               <AppInfoTrigger
                 trigger={
                   <Button
@@ -54,10 +52,6 @@ export function Header() {
               >
                 Login
               </Link>
-            </div>
-          ) : (
-            <div className="pointer-events-auto flex flex-1 items-center justify-end gap-2">
-              <ButtonNewChat />
             </div>
           )}
         </div>
