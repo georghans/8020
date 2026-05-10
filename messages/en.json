@@ -1,0 +1,202 @@
+{
+  "Common": {
+    "searchEllipsis": "Search...",
+    "noResultsFound": "No results found."
+  },
+  "Sidebar": {
+    "documents": "Documents",
+    "chat": "Chat",
+    "workflows": "Workflows",
+    "integrations": "Integrations",
+    "taglineLine1": "autonomous",
+    "taglineLine2": "backoffice"
+  },
+  "History": {
+    "searchHistory": "Search history"
+  },
+  "Documents": {
+    "title": "Documents",
+    "listView": "List view",
+    "gridView": "Grid view",
+    "searchTitleContent": "Search title & content...",
+    "aiSearch": "AI search",
+    "tags": "Tags",
+    "searchTags": "Search tags...",
+    "documentType": "Document type",
+    "searchTypes": "Search types...",
+    "documentSingular": "document",
+    "documentPlural": "documents",
+    "noDocumentsFound": "No documents found",
+    "adjustSearchOrFilters": "Try adjusting your search or filters",
+    "libraryEmpty": "Your document library is empty"
+    ,"edit":"Edit",
+    "preview":"Preview",
+    "download":"Download",
+    "asn":"ASN",
+    "correspondent":"Correspondent",
+    "titleColumn":"Title",
+    "docType":"Doc type",
+    "created":"Created",
+    "actions":"Actions"
+  },
+  "Workflows": {
+    "title": "Workflows",
+    "description": "Create, edit, and monitor autonomous AI workflows for recurring business processes.",
+    "newWorkflow": "New workflow",
+    "open": "Open",
+    "stepsConfigured": "{count} steps configured",
+    "status": {
+      "draft": "Draft",
+      "active": "Active",
+      "paused": "Paused"
+    },
+    "metrics": {
+      "autonomousRuns": "Autonomous runs",
+      "last7Days": "Last 7 days",
+      "activeWorkflows": "Active workflows",
+      "draftsReady": "2 drafts ready to review",
+      "savedTime": "Saved time",
+      "estimatedThisMonth": "Estimated this month"
+    },
+    "cards": {
+      "invoiceIntake": {
+        "name": "Invoice intake",
+        "description": "Read incoming invoices, extract key fields, and prepare approval notes."
+      },
+      "leadFollowUp": {
+        "name": "Lead follow-up",
+        "description": "Qualify new contacts, enrich context, and draft the next best message."
+      },
+      "weeklyBrief": {
+        "name": "Weekly brief",
+        "description": "Collect updates across connected tools and assemble an executive summary."
+      }
+    }
+  },
+  "Integrations": {
+    "title": "Integrations",
+    "description": "Set up connections to external tools so AI workflows can read, write, and act across your workspace.",
+    "addConnection": "Add connection",
+    "configure": "Configure",
+    "status": {
+      "available": "Available",
+      "comingSoon": "Coming soon"
+    },
+    "metrics": {
+      "connectedApps": "Connected apps",
+      "readyToConfigure": "Ready to configure",
+      "availableConnectors": "Available connectors",
+      "mailChatGoogle": "Mail, chat, and Google tools",
+      "workflowTriggers": "Workflow triggers",
+      "createdFromIntegrations": "Created from integrations"
+    },
+    "cards": {
+      "mail": {
+        "name": "Mail",
+        "description": "Connect inboxes for message drafting, triage, and workflow triggers."
+      },
+      "whatsapp": {
+        "name": "WhatsApp",
+        "description": "Route customer conversations into agents and follow-up workflows."
+      },
+      "googleCalendar": {
+        "name": "Google Calendar",
+        "description": "Read schedules, create events, and coordinate meeting workflows."
+      },
+      "googleDrive": {
+        "name": "Google Drive",
+        "description": "Use documents, sheets, and shared folders as workflow context."
+      }
+    }
+  },
+  "Chat": {
+    "onboarding": "What's on your mind?"
+  },
+  "Project": {
+    "recentChats": "Recent chats",
+    "noChatsYet": "No chats yet",
+    "errors": {
+      "generic": "Something went wrong.",
+      "fetchProjectFailed": "Failed to fetch project",
+      "messageTooLong": "The message you submitted was too long, please submit something shorter. (Max {max} characters)",
+      "failedToSendMessage": "Failed to send message"
+    }
+  },
+  "Settings": {
+    "title": "Settings",
+    "tabs": {
+      "general": "General",
+      "appearance": "Appearance",
+      "models": "Models"
+    },
+    "General": {
+      "account": "Account",
+      "logOutOnThisDevice": "Log out on this device",
+      "signOut": "Sign out",
+      "failedToSignOut": "Failed to sign out"
+    },
+    "Appearance": {
+      "layout": {
+        "title": "Layout"
+      },
+      "promptSuggestions": {
+        "title": "Prompt suggestions",
+        "description": "Show suggested prompts when starting a new conversation"
+      },
+      "toolInvocations": {
+        "title": "Tool invocations",
+        "description": "Show tool execution details in conversations"
+      },
+      "conversationPreviews": {
+        "title": "Conversation previews",
+        "description": "Show conversation previews in history"
+      },
+      "multiModelChat": {
+        "title": "Multi-model chat",
+        "description": "Send prompts to multiple models at once"
+      }
+    }
+  },
+  "NotFound": {
+    "title": "404 – Page not found",
+    "description": "Sorry, this page doesn't exist."
+  },
+  "Auth": {
+    "reachedLimitToday": "You've reached the limit for today",
+    "signInToIncreaseLimits": "Sign in below to increase your message limits.",
+    "continueWithGoogle": "Continue with Google",
+    "connecting": "Connecting...",
+    "loginTryMoreFeatures": "Login to try more features for free",
+    "addFilesUseMoreModels": "Add files, use more models, BYOK, and more.",
+    "termsOfService": "Terms of Service",
+    "privacyPolicy": "Privacy Policy",
+    "errors": {
+      "supabaseNotConfigured": "Supabase is not configured",
+      "unexpected": "An unexpected error occurred. Please try again."
+    }
+  },
+  "SidebarMenu": {
+    "pin": "Pin",
+    "unpin": "Unpin",
+    "rename": "Rename",
+    "delete": "Delete",
+    "untitledChat": "Untitled chat"
+  },
+  "SidebarDialogs": {
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "deleting": "Deleting...",
+    "deleteChatTitle": "Delete chat?",
+    "deleteChatDescription": "This will delete \"{chatTitle}\"",
+    "deleteProjectTitle": "Delete Project",
+    "deleteProjectDescription": "Are you sure you want to delete \"{projectName}\"? This action cannot be undone and will also delete all conversations in this project.",
+    "deleteProject": "Delete Project",
+    "failedToDeleteProject": "Failed to delete project",
+    "createNewProjectTitle": "Create New Project",
+    "createNewProjectDescription": "Enter a name for your new project.",
+    "projectNamePlaceholder": "Project name",
+    "creating": "Creating...",
+    "createProject": "Create Project",
+    "failedToCreateProject": "Failed to create project"
+  }
+}

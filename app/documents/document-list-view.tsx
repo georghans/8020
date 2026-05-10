@@ -3,6 +3,7 @@
 import { type PaperlessDocument } from "@/lib/documents/api"
 import { Download, Eye, FileText, Pencil } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { useTranslations } from "next-intl"
 
 function formatDate(dateString: string): string {
   return new Date(dateString).toLocaleDateString("en-US", {
@@ -24,21 +25,22 @@ type DocumentListViewProps = {
 }
 
 export function DocumentListView({ documents }: DocumentListViewProps) {
+  const t = useTranslations("Documents")
   return (
     <div className="w-full overflow-x-auto">
       <table className="w-full min-w-[640px] text-xs">
         <thead>
           <tr className="border-b text-muted-foreground">
-            <th className="px-3 py-2 text-left font-medium w-16">ASN</th>
-            <th className="px-3 py-2 text-left font-medium w-32">Correspondent</th>
-            <th className="px-3 py-2 text-left font-medium">Title</th>
+            <th className="px-3 py-2 text-left font-medium w-16">{t("asn")}</th>
+            <th className="px-3 py-2 text-left font-medium w-32">{t("correspondent")}</th>
+            <th className="px-3 py-2 text-left font-medium">{t("titleColumn")}</th>
             <th className="px-3 py-2 text-left font-medium w-32 hidden md:table-cell">
-              Doc type
+              {t("docType")}
             </th>
             <th className="px-3 py-2 text-left font-medium w-24 hidden sm:table-cell">
-              Created
+              {t("created")}
             </th>
-            <th className="px-3 py-2 text-right font-medium w-24">Actions</th>
+            <th className="px-3 py-2 text-right font-medium w-24">{t("actions")}</th>
           </tr>
         </thead>
         <tbody className="divide-y divide-border/50">
@@ -119,7 +121,7 @@ function DocumentListRow({ document }: { document: PaperlessDocument }) {
             className="h-6 w-6 text-muted-foreground hover:text-foreground"
             asChild
           >
-            <a href={`/documents/${document.id}`} title="Edit">
+            <a href={`/documents/${document.id}`} title={t("edit")}>
               <Pencil className="h-3 w-3" />
             </a>
           </Button>
@@ -133,7 +135,7 @@ function DocumentListRow({ document }: { document: PaperlessDocument }) {
               href={`/api/documents/${document.id}/preview`}
               target="_blank"
               rel="noreferrer"
-              title="Preview"
+              title={t("preview")}
             >
               <Eye className="h-3 w-3" />
             </a>
@@ -144,7 +146,7 @@ function DocumentListRow({ document }: { document: PaperlessDocument }) {
             className="h-6 w-6 text-muted-foreground hover:text-foreground"
             asChild
           >
-            <a href={downloadUrl} download title="Download">
+            <a href={downloadUrl} download title={t("download")}>
               <Download className="h-3 w-3" />
             </a>
           </Button>

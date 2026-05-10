@@ -16,15 +16,15 @@ export function ButtonNewChat() {
 
   useKeyShortcut(
     (e) => (e.key === "u" || e.key === "U") && e.metaKey && e.shiftKey,
-    () => router.push("/")
+    () => router.push("/c")
   )
 
-  if (pathname === "/") return null
+  if (pathname === "/c") return null
   return (
     <Tooltip>
       <TooltipTrigger asChild>
         <Link
-          href="/"
+          href="/c"
           className="text-muted-foreground hover:text-foreground hover:bg-muted bg-background rounded-full p-1.5 transition-colors"
           prefetch
           aria-label="New Chat"

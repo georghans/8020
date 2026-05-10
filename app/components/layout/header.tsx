@@ -23,7 +23,7 @@ export function Header() {
           <div className="-ml-0.5 flex flex-1 items-center gap-2 lg:-ml-2.5">
             <div className="flex flex-1 items-center gap-2">
               <Link
-                href="/"
+                href="/c"
                 className="pointer-events-auto inline-flex items-center text-xl font-medium tracking-tight"
               >
                 <AppIcon className="mr-1 size-4" />
@@ -32,7 +32,7 @@ export function Header() {
               {isMobile && <HeaderSidebarTrigger />}
             </div>
           </div>
-          {!isLoggedIn && (
+          {!isLoggedIn ? (
             <div className="pointer-events-auto flex items-center justify-end gap-4">
               <AppInfoTrigger
                 trigger={
@@ -53,7 +53,7 @@ export function Header() {
                 Login
               </Link>
             </div>
-          )}
+          ) : null}
         </div>
       </div>
     </header>

@@ -12,6 +12,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { fetchClient } from "@/lib/fetch"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
+import { useTranslations } from "next-intl"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 
@@ -31,6 +32,7 @@ export function DialogCreateProject({
   isOpen,
   setIsOpen,
 }: DialogCreateProjectProps) {
+  const t = useTranslations("SidebarDialogs")
   const [projectName, setProjectName] = useState("")
   const queryClient = useQueryClient()
   const router = useRouter()
@@ -45,7 +47,7 @@ export function DialogCreateProject({
       })
 
       if (!response.ok) {
-        throw new Error("Failed to create project")
+        throw new Error(t("failedToCreateProject"))
       }
 
       return response.json()
@@ -70,14 +72,14 @@ export function DialogCreateProject({
       <DialogContent>
         <form onSubmit={handleSubmit}>
           <DialogHeader>
-            <DialogTitle>Create New Project</DialogTitle>
+            <DialogTitle>{t("createNewProjectTitle")}</DialogTitle>
             <DialogDescription>
-              Enter a name for your new project.
+              {t("createNewProjectDescription")}
             </DialogDescription>
           </DialogHeader>
           <div className="py-4">
             <Input
-              placeholder="Project name"
+              placeholder={t("projectNamePlaceholder")}
               value={projectName}
               onChange={(e) => setProjectName(e.target.value)}
               autoFocus
@@ -89,15 +91,15 @@ export function DialogCreateProject({
               variant="outline"
               onClick={() => setIsOpen(false)}
             >
-              Cancel
+              {t("cancel")}
             </Button>
             <Button
               type="submit"
               disabled={!projectName.trim() || createProjectMutation.isPending}
             >
               {createProjectMutation.isPending
-                ? "Creating..."
-                : "Create Project"}
+                ? t("creating")
+                : t("createProject")}
             </Button>
           </DialogFooter>
         </form>

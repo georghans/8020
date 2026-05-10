@@ -9,6 +9,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { DotsThree, PencilSimple, Trash } from "@phosphor-icons/react"
+import { useTranslations } from "next-intl"
 import { useState } from "react"
 
 type Project = {
@@ -29,6 +30,7 @@ export function SidebarProjectMenu({
   onStartEditing,
   onMenuOpenChange,
 }: SidebarProjectMenuProps) {
+  const t = useTranslations("SidebarMenu")
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
   const isMobile = useBreakpoint(768)
 
@@ -57,7 +59,7 @@ export function SidebarProjectMenu({
             }}
           >
             <PencilSimple size={16} className="mr-2" />
-            Rename
+            {t("rename")}
           </DropdownMenuItem>
           <DropdownMenuItem
             className="text-destructive"
@@ -69,7 +71,7 @@ export function SidebarProjectMenu({
             }}
           >
             <Trash size={16} className="mr-2" />
-            Delete
+            {t("delete")}
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

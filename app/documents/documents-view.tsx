@@ -1,19 +1,14 @@
 "use client"
 
+import { useKeyShortcut } from "@/app/hooks/use-key-shortcut"
 import { AiSearchModal } from "./ai-search-modal"
+import { AiSearchTrigger } from "./ai-search-trigger"
 import { DocumentCard } from "./document-card"
 import { DocumentListView } from "./document-list-view"
 import { FilterCombobox } from "./filter-combobox"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Skeleton } from "@/components/ui/skeleton"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuRadioGroup,
-  DropdownMenuRadioItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
 import {
   getDocuments,
   type DocumentFilters,
@@ -24,7 +19,6 @@ import {
 import { cn } from "@/lib/utils"
 import { useQuery } from "@tanstack/react-query"
 import {
-  ChevronDown,
   ChevronLeft,
   ChevronRight,
   FileX,
@@ -32,15 +26,14 @@ import {
   LayoutGrid,
   List,
   Search,
-  Sparkles,
   Tag,
 } from "lucide-react"
 import { useCallback, useState } from "react"
 import { useDebounce } from "@/app/hooks/use-debounce"
+import { useTranslations } from "next-intl"
 
 const PAGE_SIZE = 24
 
-type SearchMode = "title_content" | "ai"
 type ViewMode = "grid" | "list"
 
 async function fetchTags(): Promise<PaperlessTag[]> {
@@ -62,8 +55,8 @@ export function DocumentsView({
 }: {
   initialData: PaperlessDocumentsResponse
 }) {
+  const t = useTranslations("Documents")
   const [searchQuery, setSearchQuery] = useState("")
-  const [searchMode, setSearchMode] = useState<SearchMode>("title_content")
   const [viewMode, setViewMode] = useState<ViewMode>("grid")
   const [aiSearchOpen, setAiSearchOpen] = useState(false)
   const [page, setPage] = useState(1)
@@ -119,12 +112,12 @@ export function DocumentsView({
     setPage(1)
   }, [])
 
-  const handleSearchModeChange = (mode: SearchMode) => {
-    setSearchMode(mode)
-    if (mode === "ai") {
-      setAiSearchOpen(true)
-    }
-  }
+  const openAiSearch = useCallback(() => setAiSearchOpen(true), [])
+
+  useKeyShortcut(
+    (e) => e.key === "k" && (e.metaKey || e.ctrlKey),
+    openAiSearch
+  )
 
   const documents = data?.results ?? []
   const totalCount = data?.count ?? 0
@@ -136,7 +129,7 @@ export function DocumentsView({
     <div className="flex h-full flex-col">
       {/* Page header */}
       <div className="flex items-center justify-between px-6 pt-6 pb-4">
-        <h1 className="text-2xl font-semibold tracking-tight">Documents</h1>
+        <h1 className="text-2xl font-semibold tracking-tight">{t("title")}</h1>
 
         {/* View toggle */}
         <div className="flex items-center gap-1 rounded-md border p-0.5">
@@ -148,7 +141,7 @@ export function DocumentsView({
               viewMode === "list" && "bg-muted text-foreground"
             )}
             onClick={() => setViewMode("list")}
-            title="List view"
+            title={t("listView")}
           >
             <List className="h-3.5 w-3.5" />
           </Button>
@@ -160,7 +153,7 @@ export function DocumentsView({
               viewMode === "grid" && "bg-muted text-foreground"
             )}
             onClick={() => setViewMode("grid")}
-            title="Grid view"
+            title={t("gridView")}
           >
             <LayoutGrid className="h-3.5 w-3.5" />
           </Button>
@@ -170,79 +163,39 @@ export function DocumentsView({
       {/* Toolbar */}
       <div className="sticky top-0 z-10 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 px-6 py-3">
         <div className="flex flex-wrap items-center gap-2">
-          {/* Search with mode toggle */}
+          {/* Search */}
           <div className="flex h-8 items-stretch overflow-hidden rounded-md border bg-background focus-within:ring-1 focus-within:ring-ring">
             <div className="relative flex items-center">
-              {searchMode === "title_content" ? (
-                <Search className="pointer-events-none absolute left-2.5 h-3.5 w-3.5 text-muted-foreground" />
-              ) : (
-                <Sparkles className="pointer-events-none absolute left-2.5 h-3.5 w-3.5 text-primary" />
-              )}
+              <Search className="pointer-events-none absolute left-2.5 h-3.5 w-3.5 text-muted-foreground" />
               <Input
-                placeholder={
-                  searchMode === "title_content"
-                    ? "Search title & content..."
-                    : "AI search..."
-                }
+                placeholder={t("searchTitleContent")}
                 className="h-full w-56 rounded-none border-0 pl-8 pr-2 text-xs shadow-none focus-visible:ring-0"
                 value={searchQuery}
                 onChange={handleSearchChange}
               />
             </div>
-            <div className="flex items-stretch border-l">
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="h-full rounded-none px-2 text-xs gap-1 text-muted-foreground hover:text-foreground border-0 shadow-none"
-                  >
-                    {searchMode === "title_content" ? "Title & content" : (
-                      <span className="flex items-center gap-1">
-                        <Sparkles className="h-3 w-3 text-primary" />
-                        AI search
-                      </span>
-                    )}
-                    <ChevronDown className="h-3 w-3" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="text-xs w-40">
-                  <DropdownMenuRadioGroup
-                    value={searchMode}
-                    onValueChange={(v) => handleSearchModeChange(v as SearchMode)}
-                  >
-                    <DropdownMenuRadioItem value="title_content" className="text-xs">
-                      <Search className="mr-2 h-3 w-3" />
-                      Title &amp; content
-                    </DropdownMenuRadioItem>
-                    <DropdownMenuRadioItem value="ai" className="text-xs">
-                      <Sparkles className="mr-2 h-3 w-3 text-primary" />
-                      AI search
-                    </DropdownMenuRadioItem>
-                  </DropdownMenuRadioGroup>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </div>
           </div>
+
+          <AiSearchTrigger onOpen={openAiSearch} />
 
           {/* Tags filter */}
           <FilterCombobox
-            label="Tags"
+            label={t("tags")}
             icon={<Tag className="h-3 w-3" />}
             options={tags.map((t) => ({ id: t.id, name: t.name, color: t.text_colour }))}
             selected={selectedTags}
             onSelect={handleTagsChange}
-            placeholder="Search tags..."
+            placeholder={t("searchTags")}
           />
 
           {/* Document type filter */}
           <FilterCombobox
-            label="Document type"
+            label={t("documentType")}
             icon={<Hash className="h-3 w-3" />}
             options={documentTypes.map((dt) => ({ id: dt.id, name: dt.name }))}
             selected={selectedDocType}
             onSelect={handleDocTypeChange}
-            placeholder="Search types..."
+            placeholder={t("searchTypes")}
           />
         </div>
       </div>
@@ -255,7 +208,7 @@ export function DocumentsView({
           ) : (
             <>
               {totalCount.toLocaleString()}{" "}
-              {totalCount === 1 ? "document" : "documents"}
+              {totalCount === 1 ? t("documentSingular") : t("documentPlural")}
             </>
           )}
         </span>
@@ -309,11 +262,11 @@ export function DocumentsView({
         ) : documents.length === 0 ? (
           <div className="flex h-[50vh] flex-col items-center justify-center text-muted-foreground">
             <FileX className="h-12 w-12 mb-3 opacity-30" />
-            <p className="text-base font-medium">No documents found</p>
+            <p className="text-base font-medium">{t("noDocumentsFound")}</p>
             <p className="text-xs mt-1">
               {hasActiveFilters
-                ? "Try adjusting your search or filters"
-                : "Your document library is empty"}
+                ? t("adjustSearchOrFilters")
+                : t("libraryEmpty")}
             </p>
           </div>
         ) : viewMode === "grid" ? (

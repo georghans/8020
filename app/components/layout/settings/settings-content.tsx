@@ -12,6 +12,7 @@ import {
   XIcon,
 } from "@phosphor-icons/react"
 import { useState } from "react"
+import { useTranslations } from "next-intl"
 import { InteractionPreferences } from "./appearance/interaction-preferences"
 import { ThemeSelection } from "./appearance/theme-selection"
 import { AccountManagement } from "./general/account-management"
@@ -27,6 +28,7 @@ type TabType = "general" | "appearance" | "models"
 export function SettingsContent({
   isDrawer = false,
 }: SettingsContentProps) {
+  const t = useTranslations("Settings")
   const [activeTab, setActiveTab] = useState<TabType>("general")
 
   return (
@@ -38,7 +40,7 @@ export function SettingsContent({
     >
       {isDrawer && (
         <div className="border-border mb-2 flex items-center justify-between border-b px-4 pb-2">
-          <h2 className="text-lg font-medium">Settings</h2>
+          <h2 className="text-lg font-medium">{t("title")}</h2>
           <DrawerClose asChild>
             <Button variant="ghost" size="icon">
               <XIcon className="size-4" />
@@ -65,21 +67,21 @@ export function SettingsContent({
                   className="ml-6 flex shrink-0 items-center gap-2"
                 >
                   <GearSixIcon className="size-4" />
-                  <span>General</span>
+                  <span>{t("tabs.general")}</span>
                 </TabsTrigger>
                 <TabsTrigger
                   value="appearance"
                   className="flex shrink-0 items-center gap-2"
                 >
                   <PaintBrushIcon className="size-4" />
-                  <span>Appearance</span>
+                  <span>{t("tabs.appearance")}</span>
                 </TabsTrigger>
                 <TabsTrigger
                   value="models"
                   className="flex shrink-0 items-center gap-2"
                 >
                   <CubeIcon className="size-4" />
-                  <span>Models</span>
+                  <span>{t("tabs.models")}</span>
                 </TabsTrigger>
               </TabsList>
             </div>
@@ -115,7 +117,7 @@ export function SettingsContent({
                 >
                   <div className="flex items-center gap-2">
                     <GearSixIcon className="size-4" />
-                    <span>General</span>
+                    <span>{t("tabs.general")}</span>
                   </div>
                 </TabsTrigger>
 
@@ -125,7 +127,7 @@ export function SettingsContent({
                 >
                   <div className="flex items-center gap-2">
                     <PaintBrushIcon className="size-4" />
-                    <span>Appearance</span>
+                    <span>{t("tabs.appearance")}</span>
                   </div>
                 </TabsTrigger>
 
@@ -135,7 +137,7 @@ export function SettingsContent({
                 >
                   <div className="flex items-center gap-2">
                     <CubeIcon className="size-4" />
-                    <span>Models</span>
+                    <span>{t("tabs.models")}</span>
                   </div>
                 </TabsTrigger>
               </div>

@@ -5,6 +5,7 @@ import { Conversation } from "@/app/components/chat/conversation"
 import { useChatOperations } from "@/app/components/chat/use-chat-operations"
 import { useFileUpload } from "@/app/components/chat/use-file-upload"
 import { useModel } from "@/app/components/chat/use-model"
+import { HistorySearchTrigger } from "@/app/components/history/history-search-trigger"
 import { ProjectChatItem } from "@/app/components/layout/sidebar/project-chat-item"
 import { toast } from "@/components/ui/toast"
 import { useChats } from "@/lib/chat-store/chats/provider"
@@ -18,6 +19,7 @@ import { useChat } from "@ai-sdk/react"
 import { ChatCircleIcon } from "@phosphor-icons/react"
 import { useQuery } from "@tanstack/react-query"
 import { AnimatePresence, motion } from "motion/react"
+import { useTranslations } from "next-intl"
 import { usePathname } from "next/navigation"
 import { useCallback, useMemo, useState } from "react"
 
@@ -33,6 +35,7 @@ type ProjectViewProps = {
 }
 
 export function ProjectView({ projectId }: ProjectViewProps) {
+  const t = useTranslations("Project")
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [enableSearch, setEnableSearch] = useState(false)
   const [currentChatId, setCurrentChatId] = useState<string | null>(null)
@@ -56,7 +59,7 @@ export function ProjectView({ projectId }: ProjectViewProps) {
     queryFn: async () => {
       const response = await fetch(`/api/projects/${projectId}`)
       if (!response.ok) {
-        throw new Error("Failed to fetch project")
+        throw new Error(t("errors.fetchProjectFailed"))
       }
       return response.json()
     },
@@ -72,7 +75,7 @@ export function ProjectView({ projectId }: ProjectViewProps) {
 
   // Handle errors directly in onError callback
   const handleError = useCallback((error: Error) => {
-    let errorMsg = "Something went wrong."
+    let errorMsg = t("errors.generic")
     try {
       const parsed = JSON.parse(error.message)
       errorMsg = parsed.error || errorMsg
@@ -83,7 +86,7 @@ export function ProjectView({ projectId }: ProjectViewProps) {
       title: errorMsg,
       status: "error",
     })
-  }, [])
+  }, [t])
 
   const {
     messages,
@@ -136,7 +139,7 @@ export function ProjectView({ projectId }: ProjectViewProps) {
           window.history.pushState(null, "", `/c/${newChat.id}`)
           return newChat.id
         } catch (err: unknown) {
-          let errorMessage = "Something went wrong."
+          let errorMessage = t("errors.generic")
           try {
             const errorObj = err as { message?: string }
             if (errorObj.message) {
@@ -164,6 +167,7 @@ export function ProjectView({ projectId }: ProjectViewProps) {
       input,
       selectedModel,
       projectId,
+      t,
     ]
   )
 
@@ -224,7 +228,7 @@ export function ProjectView({ projectId }: ProjectViewProps) {
 
       if (input.length > MESSAGE_MAX_LENGTH) {
         toast({
-          title: `The message you submitted was too long, please submit something shorter. (Max ${MESSAGE_MAX_LENGTH} characters)`,
+          title: t("errors.messageTooLong", { max: MESSAGE_MAX_LENGTH }),
           status: "error",
         })
         setMessages((prev) => prev.filter((msg) => msg.id !== optimisticId))
@@ -268,7 +272,7 @@ export function ProjectView({ projectId }: ProjectViewProps) {
     } catch {
       setMessages((prev) => prev.filter((msg) => msg.id !== optimisticId))
       cleanupOptimisticAttachments(optimisticMessage.experimental_attachments)
-      toast({ title: "Failed to send message", status: "error" })
+      toast({ title: t("errors.failedToSendMessage"), status: "error" })
     } finally {
       setIsSubmitting(false)
     }
@@ -289,6 +293,7 @@ export function ProjectView({ projectId }: ProjectViewProps) {
     messages.length,
     bumpChat,
     enableSearch,
+    t,
   ])
 
   const handleReload = useCallback(async () => {
@@ -381,6 +386,12 @@ export function ProjectView({ projectId }: ProjectViewProps) {
             : "justify-end"
       )}
     >
+      {isAuthenticated && (
+        <div className="absolute left-4 top-3 z-40 md:left-6">
+          <HistorySearchTrigger />
+        </div>
+      )}
+
       <AnimatePresence initial={false} mode="popLayout">
         {showOnboarding ? (
           <motion.div
@@ -427,7 +438,7 @@ export function ProjectView({ projectId }: ProjectViewProps) {
       {showOnboarding && chats.length > 0 ? (
         <div className="mx-auto w-full max-w-3xl px-4 pt-6 pb-20">
           <h2 className="text-muted-foreground mb-3 text-sm font-medium">
-            Recent chats
+            {t("recentChats")}
           </h2>
           <div className="space-y-2">
             {chats.map((chat) => (
@@ -442,7 +453,7 @@ export function ProjectView({ projectId }: ProjectViewProps) {
       ) : showOnboarding && chats.length === 0 ? (
         <div className="mx-auto w-full max-w-3xl px-4 pt-6 pb-20">
           <h2 className="text-muted-foreground mb-3 text-sm font-medium">
-            No chats yet
+            {t("noChatsYet")}
           </h2>
         </div>
       ) : null}

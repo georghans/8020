@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/dialog"
 import { fetchClient } from "@/lib/fetch"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
+import { useTranslations } from "next-intl"
 import { usePathname, useRouter } from "next/navigation"
 
 type Project = {
@@ -31,6 +32,7 @@ export function DialogDeleteProject({
   setIsOpen,
   project,
 }: DialogDeleteProjectProps) {
+  const t = useTranslations("SidebarDialogs")
   const queryClient = useQueryClient()
   const router = useRouter()
   const pathname = usePathname()
@@ -43,7 +45,7 @@ export function DialogDeleteProject({
 
       if (!response.ok) {
         const error = await response.json()
-        throw new Error(error.error || "Failed to delete project")
+        throw new Error(error.error || t("failedToDeleteProject"))
       }
 
       return response.json()
@@ -68,11 +70,9 @@ export function DialogDeleteProject({
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Delete Project</DialogTitle>
+          <DialogTitle>{t("deleteProjectTitle")}</DialogTitle>
           <DialogDescription>
-            Are you sure you want to delete &quot;{project.name}&quot;? This
-            action cannot be undone and will also delete all conversations in
-            this project.
+            {t("deleteProjectDescription", { projectName: project.name })}
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>
@@ -82,7 +82,7 @@ export function DialogDeleteProject({
             onClick={() => setIsOpen(false)}
             disabled={deleteProjectMutation.isPending}
           >
-            Cancel
+            {t("cancel")}
           </Button>
           <Button
             type="button"
@@ -90,7 +90,9 @@ export function DialogDeleteProject({
             onClick={handleConfirmDelete}
             disabled={deleteProjectMutation.isPending}
           >
-            {deleteProjectMutation.isPending ? "Deleting..." : "Delete Project"}
+            {deleteProjectMutation.isPending
+              ? t("deleting")
+              : t("deleteProject")}
           </Button>
         </DialogFooter>
       </DialogContent>

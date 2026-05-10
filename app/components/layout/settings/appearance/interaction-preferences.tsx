@@ -2,8 +2,10 @@
 
 import { Switch } from "@/components/ui/switch"
 import { useUserPreferences } from "@/lib/user-preference-store/provider"
+import { useTranslations } from "next-intl"
 
 export function InteractionPreferences() {
+  const t = useTranslations("Settings.Appearance")
   const {
     preferences,
     setPromptSuggestions,
@@ -18,9 +20,9 @@ export function InteractionPreferences() {
       <div>
         <div className="flex items-center justify-between">
           <div>
-            <h3 className="text-sm font-medium">Prompt suggestions</h3>
+            <h3 className="text-sm font-medium">{t("promptSuggestions.title")}</h3>
             <p className="text-muted-foreground text-xs">
-              Show suggested prompts when starting a new conversation
+              {t("promptSuggestions.description")}
             </p>
           </div>
           <Switch
@@ -33,9 +35,9 @@ export function InteractionPreferences() {
       <div>
         <div className="flex items-center justify-between">
           <div>
-            <h3 className="text-sm font-medium">Tool invocations</h3>
+            <h3 className="text-sm font-medium">{t("toolInvocations.title")}</h3>
             <p className="text-muted-foreground text-xs">
-              Show tool execution details in conversations
+              {t("toolInvocations.description")}
             </p>
           </div>
           <Switch
@@ -48,9 +50,9 @@ export function InteractionPreferences() {
       <div>
         <div className="flex items-center justify-between">
           <div>
-            <h3 className="text-sm font-medium">Conversation previews</h3>
+            <h3 className="text-sm font-medium">{t("conversationPreviews.title")}</h3>
             <p className="text-muted-foreground text-xs">
-              Show conversation previews in history
+              {t("conversationPreviews.description")}
             </p>
           </div>
           <Switch
@@ -63,9 +65,9 @@ export function InteractionPreferences() {
       <div>
         <div className="flex items-center justify-between">
           <div>
-            <h3 className="text-sm font-medium">Multi-model chat</h3>
+            <h3 className="text-sm font-medium">{t("multiModelChat.title")}</h3>
             <p className="text-muted-foreground text-xs">
-              Send prompts to multiple models at once
+              {t("multiModelChat.description")}
             </p>
           </div>
           <Switch
