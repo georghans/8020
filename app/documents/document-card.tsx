@@ -1,9 +1,10 @@
 "use client"
 
 import { Badge } from "@/components/ui/badge"
-import { Card, CardContent } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
 import { type PaperlessDocument } from "@/lib/documents/api"
-import { Calendar, Download, FileText, Tag } from "lucide-react"
+import { cn } from "@/lib/utils"
+import { Calendar, Download, Eye, FileText, Hash, Pencil } from "lucide-react"
 
 function formatDate(dateString: string): string {
   return new Date(dateString).toLocaleDateString("en-US", {
@@ -13,12 +14,11 @@ function formatDate(dateString: string): string {
   })
 }
 
-function getTagColorStyle(color: string): React.CSSProperties {
-  // Paperless returns hex colors, we need to make them readable
+function getTagStyle(color: string): React.CSSProperties {
   return {
-    backgroundColor: color + "20",
-    borderColor: color + "40",
-    color: color,
+    backgroundColor: color,
+    color: "#fff",
+    border: "none",
   }
 }
 
@@ -31,86 +31,143 @@ export function DocumentCard({ document }: DocumentCardProps) {
   const downloadUrl = `/api/documents/${document.id}/download`
 
   return (
-    <Card className="group overflow-hidden transition-all hover:shadow-md">
-      {/* Thumbnail preview area */}
-      <div className="bg-muted relative aspect-[3/4] overflow-hidden">
+    <div
+      className={cn(
+        "group relative flex flex-col overflow-hidden rounded-lg border bg-card transition-all",
+        "hover:border-border/80 hover:shadow-sm"
+      )}
+    >
+      {/* Thumbnail */}
+      <div className="relative aspect-[3/4] overflow-hidden bg-muted/50">
         <img
           src={previewUrl}
           alt={document.title}
-          className="h-full w-full object-contain transition-transform duration-300 group-hover:scale-105"
+          className="h-full w-full object-contain transition-transform duration-300 group-hover:scale-[1.02]"
           loading="lazy"
           onError={(e) => {
-            // If preview fails, show placeholder
             const target = e.target as HTMLImageElement
             target.style.display = "none"
-            const parent = target.parentElement
-            if (parent) {
-              const placeholder = parent.querySelector(".placeholder") as HTMLElement
-              if (placeholder) placeholder.style.display = "flex"
-            }
+            const placeholder = target.parentElement?.querySelector(
+              ".thumb-placeholder"
+            ) as HTMLElement | null
+            if (placeholder) placeholder.style.display = "flex"
           }}
         />
-        <div className="placeholder absolute inset-0 hidden flex-col items-center justify-center">
-          <FileText className="text-muted-foreground h-12 w-12 opacity-40" />
-          <span className="text-muted-foreground mt-2 text-xs">
-            {document.page_count} {document.page_count === 1 ? "page" : "pages"}
-          </span>
-        </div>
 
-        {/* Hover overlay with actions */}
-        <div className="absolute inset-0 flex items-center justify-center gap-2 bg-black/0 transition-all group-hover:bg-black/30">
-          <a
-            href={downloadUrl}
-            download
-            className="opacity-0 transition-all group-hover:opacity-100"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="bg-background/90 hover:bg-background flex h-9 w-9 items-center justify-center rounded-full shadow-sm">
-              <Download className="h-4 w-4" />
-            </div>
-          </a>
-        </div>
-      </div>
-
-      <CardContent className="p-3">
-        {/* Title */}
-        <h3 className="line-clamp-2 text-sm font-medium leading-tight">
-          {document.title || document.original_file_name}
-        </h3>
-
-        {/* Meta info */}
-        <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted-foreground">
-          {document.correspondent && (
-            <span className="truncate">{document.correspondent.name}</span>
+        {/* Placeholder when image fails */}
+        <div className="thumb-placeholder absolute inset-0 hidden flex-col items-center justify-center gap-2">
+          <FileText className="h-10 w-10 text-muted-foreground/30" />
+          {document.page_count > 0 && (
+            <span className="text-[10px] text-muted-foreground">
+              {document.page_count}p
+            </span>
           )}
-          <div className="flex items-center gap-1">
-            <Calendar className="h-3 w-3" />
-            <span>{formatDate(document.created)}</span>
-          </div>
         </div>
 
-        {/* Tags */}
+        {/* Tags overlay — top of thumbnail */}
         {document.tags.length > 0 && (
-          <div className="mt-2 flex flex-wrap gap-1">
-            {document.tags.slice(0, 4).map((tag) => (
-              <Badge
+          <div className="absolute top-1.5 left-1.5 right-1.5 flex flex-wrap gap-0.5">
+            {document.tags.slice(0, 3).map((tag) => (
+              <span
                 key={tag.id}
-                variant="outline"
-                className="text-[10px] px-1.5 py-0"
-                style={getTagColorStyle(tag.color)}
+                className="inline-flex items-center rounded px-1.5 py-0.5 text-[10px] font-medium leading-none"
+                style={getTagStyle(tag.color)}
               >
-                <Tag className="mr-0.5 h-2.5 w-2.5" />
                 {tag.name}
-              </Badge>
+              </span>
             ))}
-            {document.tags.length > 4 && (
-              <Badge variant="outline" className="text-[10px] px-1.5 py-0">
-                +{document.tags.length - 4}
-              </Badge>
+            {document.tags.length > 3 && (
+              <span className="inline-flex items-center rounded bg-black/60 px-1.5 py-0.5 text-[10px] font-medium leading-none text-white">
+                +{document.tags.length - 3}
+              </span>
             )}
           </div>
         )}
-      </CardContent>
-    </Card>
+
+        {/* Hover action overlay */}
+        <div className="absolute inset-0 flex items-center justify-center bg-black/0 transition-all group-hover:bg-black/20" />
+      </div>
+
+      {/* Card body */}
+      <div className="flex flex-1 flex-col gap-1.5 p-2.5">
+        {/* Correspondent */}
+        {document.correspondent && (
+          <p className="truncate text-[11px] font-medium text-primary leading-none">
+            {document.correspondent.name}
+          </p>
+        )}
+
+        {/* Title */}
+        <h3 className="line-clamp-2 text-xs font-medium leading-snug text-foreground">
+          {document.title || document.original_file_name}
+        </h3>
+
+        {/* Meta row */}
+        <div className="mt-auto flex flex-col gap-0.5 pt-1">
+          {document.document_type && (
+            <div className="flex items-center gap-1 text-[10px] text-muted-foreground">
+              <FileText className="h-2.5 w-2.5 flex-shrink-0" />
+              <span className="truncate">{document.document_type.name}</span>
+            </div>
+          )}
+          <div className="flex items-center gap-1 text-[10px] text-muted-foreground">
+            <Calendar className="h-2.5 w-2.5 flex-shrink-0" />
+            <span>{formatDate(document.created)}</span>
+          </div>
+          {document.archive_serial_number && (
+            <div className="flex items-center gap-1 text-[10px] text-muted-foreground">
+              <Hash className="h-2.5 w-2.5 flex-shrink-0" />
+              <span>{document.archive_serial_number}</span>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Action row */}
+      <div className="flex items-center justify-between border-t px-2 py-1.5">
+        <div className="flex items-center gap-0.5">
+          <Button
+            variant="ghost"
+            size="icon"
+            className="h-6 w-6 text-muted-foreground hover:text-foreground"
+            asChild
+          >
+            <a href={`/documents/${document.id}`} title="Edit">
+              <Pencil className="h-3 w-3" />
+            </a>
+          </Button>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="h-6 w-6 text-muted-foreground hover:text-foreground"
+            asChild
+          >
+            <a
+              href={`/api/documents/${document.id}/preview`}
+              target="_blank"
+              rel="noreferrer"
+              title="Preview"
+            >
+              <Eye className="h-3 w-3" />
+            </a>
+          </Button>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="h-6 w-6 text-muted-foreground hover:text-foreground"
+            asChild
+          >
+            <a href={downloadUrl} download title="Download">
+              <Download className="h-3 w-3" />
+            </a>
+          </Button>
+        </div>
+        {document.page_count > 0 && (
+          <span className="text-[10px] text-muted-foreground/60">
+            {document.page_count}p
+          </span>
+        )}
+      </div>
+    </div>
   )
 }

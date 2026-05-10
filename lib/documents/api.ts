@@ -40,26 +40,76 @@ export type PaperlessDocument = {
   original_file_name: string
   page_count: number
   archived_file_name: string | null
+  archive_serial_number: string | null
 }
 
 export type PaperlessDocumentsResponse = {
   count: number
+  next: string | null
+  previous: string | null
   results: PaperlessDocument[]
 }
 
+export type PaperlessTag = {
+  id: number
+  name: string
+  colour: number
+  text_colour: string
+  match: string
+  matching_algorithm: number
+  is_insensitive: boolean
+  document_count: number
+  slug: string
+}
+
+export type PaperlessDocumentType = {
+  id: number
+  name: string
+  match: string
+  matching_algorithm: number
+  is_insensitive: boolean
+  document_count: number
+  slug: string
+}
+
+export type DocumentFilters = {
+  query?: string
+  tags?: number[]
+  documentType?: number
+}
+
 export const getDocuments = cache(
-  async (query?: string, page = 1, pageSize = 24): Promise<PaperlessDocumentsResponse> => {
+  async (
+    filters?: DocumentFilters,
+    page = 1,
+    pageSize = 24
+  ): Promise<PaperlessDocumentsResponse> => {
     const params = new URLSearchParams()
     params.set("page", String(page))
     params.set("page_size", String(pageSize))
     params.set("ordering", "-created")
-    if (query) {
-      params.set("query", query)
+    if (filters?.query) {
+      params.set("query", filters.query)
     }
-
+    if (filters?.tags && filters.tags.length > 0) {
+      filters.tags.forEach((tagId) => params.append("tags__id__all", String(tagId)))
+    }
+    if (filters?.documentType) {
+      params.set("document_type__id", String(filters.documentType))
+    }
     return paperlessFetch(`/api/documents/?${params.toString()}`)
   }
 )
+
+export const getTags = cache(async (): Promise<PaperlessTag[]> => {
+  const data = await paperlessFetch("/api/tags/?page_size=500")
+  return data.results ?? []
+})
+
+export const getDocumentTypes = cache(async (): Promise<PaperlessDocumentType[]> => {
+  const data = await paperlessFetch("/api/document_types/?page_size=500")
+  return data.results ?? []
+})
 
 export const getDocumentThumbnail = (documentId: number): string => {
   if (!PAPERLESS_URL) return ""
