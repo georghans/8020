@@ -12,7 +12,15 @@
     "taglineLine2": "backoffice"
   },
   "History": {
-    "searchHistory": "Search history"
+    "searchHistory": "Search history",
+    "history": "History",
+    "historyShortcut": "History ⌘+K",
+    "chatHistoryTitle": "Chat History",
+    "chatHistoryDescription": "Search through your past conversations",
+    "searchHistoryPlaceholder": "Search history...",
+    "searchEllipsis": "Search...",
+    "noChatHistoryFound": "No chat history found.",
+    "pinned": "Pinned"
   },
   "Documents": {
     "title": "Documents",
@@ -28,16 +36,16 @@
     "documentPlural": "documents",
     "noDocumentsFound": "No documents found",
     "adjustSearchOrFilters": "Try adjusting your search or filters",
-    "libraryEmpty": "Your document library is empty"
-    ,"edit":"Edit",
-    "preview":"Preview",
-    "download":"Download",
-    "asn":"ASN",
-    "correspondent":"Correspondent",
-    "titleColumn":"Title",
-    "docType":"Doc type",
-    "created":"Created",
-    "actions":"Actions"
+    "libraryEmpty": "Your document library is empty",
+    "edit": "Edit",
+    "preview": "Preview",
+    "download": "Download",
+    "asn": "ASN",
+    "correspondent": "Correspondent",
+    "titleColumn": "Title",
+    "docType": "Doc type",
+    "created": "Created",
+    "actions": "Actions"
   },
   "Workflows": {
     "title": "Workflows",
@@ -133,7 +141,11 @@
       "account": "Account",
       "logOutOnThisDevice": "Log out on this device",
       "signOut": "Sign out",
-      "failedToSignOut": "Failed to sign out"
+      "failedToSignOut": "Failed to sign out",
+      "language": "Language",
+      "languageDescription": "Choose the UI language",
+      "german": "Deutsch",
+      "english": "English"
     },
     "Appearance": {
       "layout": {

@@ -1,0 +1,214 @@
+{
+  "Common": {
+    "searchEllipsis": "Suchen...",
+    "noResultsFound": "Keine Ergebnisse gefunden."
+  },
+  "Sidebar": {
+    "documents": "Dokumente",
+    "chat": "Chat",
+    "workflows": "Workflows",
+    "integrations": "Integrationen",
+    "taglineLine1": "autonomous",
+    "taglineLine2": "backoffice"
+  },
+  "History": {
+    "searchHistory": "Verlauf durchsuchen",
+    "history": "Verlauf",
+    "historyShortcut": "Verlauf ⌘+K",
+    "chatHistoryTitle": "Chat-Verlauf",
+    "chatHistoryDescription": "Durchsuche deine bisherigen Unterhaltungen",
+    "searchHistoryPlaceholder": "Verlauf durchsuchen...",
+    "searchEllipsis": "Suchen...",
+    "noChatHistoryFound": "Kein Chat-Verlauf gefunden.",
+    "pinned": "Angeheftet"
+  },
+  "Documents": {
+    "title": "Dokumente",
+    "listView": "Listenansicht",
+    "gridView": "Grid-Ansicht",
+    "searchTitleContent": "Titel & Inhalt durchsuchen...",
+    "aiSearch": "AI-Suche",
+    "tags": "Tags",
+    "searchTags": "Tags durchsuchen...",
+    "documentType": "Dokumenttyp",
+    "searchTypes": "Typen durchsuchen...",
+    "documentSingular": "Dokument",
+    "documentPlural": "Dokumente",
+    "noDocumentsFound": "Keine Dokumente gefunden",
+    "adjustSearchOrFilters": "Passe Suche oder Filter an",
+    "libraryEmpty": "Deine Dokumentbibliothek ist leer",
+    "edit": "Bearbeiten",
+    "preview": "Vorschau",
+    "download": "Download",
+    "asn": "ASN",
+    "correspondent": "Korrespondenz",
+    "titleColumn": "Titel",
+    "docType": "Dokumenttyp",
+    "created": "Erstellt",
+    "actions": "Aktionen"
+  },
+  "Workflows": {
+    "title": "Workflows",
+    "description": "Erstelle, bearbeite und überwache autonome AI-Workflows für wiederkehrende Geschäftsprozesse.",
+    "newWorkflow": "Neuer Workflow",
+    "open": "Öffnen",
+    "stepsConfigured": "{count} Schritte konfiguriert",
+    "status": {
+      "draft": "Entwurf",
+      "active": "Aktiv",
+      "paused": "Pausiert"
+    },
+    "metrics": {
+      "autonomousRuns": "Autonome Runs",
+      "last7Days": "Letzte 7 Tage",
+      "activeWorkflows": "Aktive Workflows",
+      "draftsReady": "2 Entwürfe bereit zur Review",
+      "savedTime": "Gesparte Zeit",
+      "estimatedThisMonth": "Geschätzt in diesem Monat"
+    },
+    "cards": {
+      "invoiceIntake": {
+        "name": "Rechnungseingang",
+        "description": "Liest eingehende Rechnungen, extrahiert Key-Felder und bereitet Freigabe-Notizen vor."
+      },
+      "leadFollowUp": {
+        "name": "Lead Follow-up",
+        "description": "Qualifiziert neue Kontakte, erweitert den Kontext und erstellt den nächsten Nachrichtenvorschlag."
+      },
+      "weeklyBrief": {
+        "name": "Wochenbriefing",
+        "description": "Sammelt Updates aus verbundenen Tools und erstellt ein Executive Summary."
+      }
+    }
+  },
+  "Integrations": {
+    "title": "Integrationen",
+    "description": "Richte Verbindungen zu externen Tools ein, damit AI-Workflows in deinem Workspace lesen, schreiben und handeln können.",
+    "addConnection": "Verbindung hinzufügen",
+    "configure": "Konfigurieren",
+    "status": {
+      "available": "Verfügbar",
+      "comingSoon": "Kommt bald"
+    },
+    "metrics": {
+      "connectedApps": "Verbundene Apps",
+      "readyToConfigure": "Bereit zur Konfiguration",
+      "availableConnectors": "Verfügbare Connectors",
+      "mailChatGoogle": "Mail, Chat und Google-Tools",
+      "workflowTriggers": "Workflow-Trigger",
+      "createdFromIntegrations": "Aus Integrationen erstellt"
+    },
+    "cards": {
+      "mail": {
+        "name": "Mail",
+        "description": "Verbinde Postfächer für Drafting, Triage und Workflow-Trigger."
+      },
+      "whatsapp": {
+        "name": "WhatsApp",
+        "description": "Route Kundengespräche in Agents und Follow-up-Workflows."
+      },
+      "googleCalendar": {
+        "name": "Google Kalender",
+        "description": "Lies Termine, erstelle Events und koordiniere Meeting-Workflows."
+      },
+      "googleDrive": {
+        "name": "Google Drive",
+        "description": "Nutze Dokumente, Sheets und geteilte Ordner als Workflow-Kontext."
+      }
+    }
+  },
+  "Chat": {
+    "onboarding": "Was liegt dir auf dem Herzen?"
+  },
+  "Project": {
+    "recentChats": "Letzte Chats",
+    "noChatsYet": "Noch keine Chats",
+    "errors": {
+      "generic": "Etwas ist schiefgelaufen.",
+      "fetchProjectFailed": "Projekt konnte nicht geladen werden",
+      "messageTooLong": "Deine Nachricht ist zu lang. Bitte sende etwas Kürzeres. (Max. {max} Zeichen)",
+      "failedToSendMessage": "Nachricht konnte nicht gesendet werden"
+    }
+  },
+  "Settings": {
+    "title": "Settings",
+    "tabs": {
+      "general": "General",
+      "appearance": "Appearance",
+      "models": "Models"
+    },
+    "General": {
+      "account": "Account",
+      "logOutOnThisDevice": "Auf diesem Gerät ausloggen",
+      "signOut": "Sign out",
+      "failedToSignOut": "Sign out fehlgeschlagen",
+      "language": "Sprache",
+      "languageDescription": "Wähle die Sprache der Oberfläche",
+      "german": "Deutsch",
+      "english": "English"
+    },
+    "Appearance": {
+      "layout": {
+        "title": "Layout"
+      },
+      "promptSuggestions": {
+        "title": "Prompt-Vorschläge",
+        "description": "Zeigt vorgeschlagene Prompts beim Start einer neuen Unterhaltung"
+      },
+      "toolInvocations": {
+        "title": "Tool Invocations",
+        "description": "Zeigt Details zu Tool-Ausführungen in Unterhaltungen"
+      },
+      "conversationPreviews": {
+        "title": "Conversation Previews",
+        "description": "Zeigt Conversation Previews im Verlauf"
+      },
+      "multiModelChat": {
+        "title": "Multi-Model Chat",
+        "description": "Sendet Prompts gleichzeitig an mehrere Models"
+      }
+    }
+  },
+  "NotFound": {
+    "title": "404 – Seite nicht gefunden",
+    "description": "Sorry, diese Seite existiert nicht."
+  },
+  "Auth": {
+    "reachedLimitToday": "Du hast das heutige Limit erreicht",
+    "signInToIncreaseLimits": "Melde dich an, um dein Nachrichtenlimit zu erhöhen.",
+    "continueWithGoogle": "Mit Google fortfahren",
+    "connecting": "Verbinden...",
+    "loginTryMoreFeatures": "Logge dich ein, um mehr Features kostenlos zu testen",
+    "addFilesUseMoreModels": "Füge Dateien hinzu, nutze mehr Models, BYOK und mehr.",
+    "termsOfService": "Nutzungsbedingungen",
+    "privacyPolicy": "Datenschutz",
+    "errors": {
+      "supabaseNotConfigured": "Supabase ist nicht konfiguriert",
+      "unexpected": "Ein unerwarteter Fehler ist aufgetreten. Bitte versuche es erneut."
+    }
+  },
+  "SidebarMenu": {
+    "pin": "Anheften",
+    "unpin": "Lösen",
+    "rename": "Umbenennen",
+    "delete": "Löschen",
+    "untitledChat": "Unbenannter Chat"
+  },
+  "SidebarDialogs": {
+    "cancel": "Abbrechen",
+    "delete": "Löschen",
+    "deleting": "Wird gelöscht...",
+    "deleteChatTitle": "Chat löschen?",
+    "deleteChatDescription": "Dadurch wird \"{chatTitle}\" gelöscht",
+    "deleteProjectTitle": "Projekt löschen",
+    "deleteProjectDescription": "Möchtest du \"{projectName}\" wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden und löscht auch alle Unterhaltungen in diesem Projekt.",
+    "deleteProject": "Projekt löschen",
+    "failedToDeleteProject": "Projekt konnte nicht gelöscht werden",
+    "createNewProjectTitle": "Neues Projekt erstellen",
+    "createNewProjectDescription": "Gib einen Namen für dein neues Projekt ein.",
+    "projectNamePlaceholder": "Projektname",
+    "creating": "Wird erstellt...",
+    "createProject": "Projekt erstellen",
+    "failedToCreateProject": "Projekt konnte nicht erstellt werden"
+  }
+}

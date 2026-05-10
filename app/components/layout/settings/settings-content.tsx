@@ -16,6 +16,7 @@ import { useTranslations } from "next-intl"
 import { InteractionPreferences } from "./appearance/interaction-preferences"
 import { ThemeSelection } from "./appearance/theme-selection"
 import { AccountManagement } from "./general/account-management"
+import { LanguageSwitcher } from "./general/language-switcher"
 import { UserProfile } from "./general/user-profile"
 import { ModelsSettings } from "./models/models-settings"
 
@@ -89,6 +90,7 @@ export function SettingsContent({
             {/* Mobile tabs content */}
             <TabsContent value="general" className="space-y-6 px-6">
               <UserProfile />
+              <LanguageSwitcher />
               {isSupabaseEnabled && (
                 <>
                   <AccountManagement />
@@ -147,6 +149,7 @@ export function SettingsContent({
             <div className="flex-1 overflow-auto px-6 pt-4">
               <TabsContent value="general" className="mt-0 space-y-6">
                 <UserProfile />
+                <LanguageSwitcher />
                 {isSupabaseEnabled && (
                   <>
                     <AccountManagement />
