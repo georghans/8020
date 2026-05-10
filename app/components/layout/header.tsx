@@ -1,9 +1,7 @@
 "use client"
 
-import { HistoryTrigger } from "@/app/components/history/history-trigger"
 import { AppInfoTrigger } from "@/app/components/layout/app-info/app-info-trigger"
 import { ButtonNewChat } from "@/app/components/layout/button-new-chat"
-import { UserMenu } from "@/app/components/layout/user-menu"
 import { useBreakpoint } from "@/app/hooks/use-breakpoint"
 import { AppIcon } from "@/components/icons/app-icon"
 import { Button } from "@/components/ui/button"
@@ -13,7 +11,7 @@ import { Info } from "@phosphor-icons/react"
 import Link from "next/link"
 import { HeaderSidebarTrigger } from "./header-sidebar-trigger"
 
-export function Header({ hasSidebar }: { hasSidebar: boolean }) {
+export function Header() {
   const isMobile = useBreakpoint(768)
   const { user } = useUser()
 
@@ -32,7 +30,7 @@ export function Header({ hasSidebar }: { hasSidebar: boolean }) {
                 <AppIcon className="mr-1 size-4" />
                 {APP_NAME}
               </Link>
-              {hasSidebar && isMobile && <HeaderSidebarTrigger />}
+              {isMobile && <HeaderSidebarTrigger />}
             </div>
           </div>
           <div />
@@ -60,8 +58,6 @@ export function Header({ hasSidebar }: { hasSidebar: boolean }) {
           ) : (
             <div className="pointer-events-auto flex flex-1 items-center justify-end gap-2">
               <ButtonNewChat />
-              {!hasSidebar && <HistoryTrigger hasSidebar={hasSidebar} />}
-              <UserMenu />
             </div>
           )}
         </div>

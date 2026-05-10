@@ -17,6 +17,7 @@ import {
 } from "@phosphor-icons/react"
 import { usePathname, useRouter } from "next/navigation"
 import { HistoryTrigger } from "../../history/history-trigger"
+import { UserMenu } from "@/app/components/layout/user-menu"
 
 function NavButton({
   icon,
@@ -104,24 +105,29 @@ export function AppSidebar() {
               onClick={() => router.push("/")}
               isActive={isChat}
             />
-            <HistoryTrigger
-              hasSidebar={false}
-              classNameTrigger="bg-transparent hover:bg-accent/80 hover:text-foreground text-primary relative inline-flex w-full items-center rounded-md px-2 py-2 text-sm transition-colors group/history"
-              icon={<ClockCounterClockwise size={20} className="mr-2" />}
-              label={
-                <div className="flex w-full items-center gap-2">
-                  <span>Chat History</span>
-                  <div className="text-muted-foreground ml-auto text-xs opacity-0 duration-150 group-hover/history:opacity-100">
-                    ⌘+K
+            {/* Chat History — child of Chat, opens modal */}
+            <div className="pl-7">
+              <HistoryTrigger
+                hasSidebar={false}
+                classNameTrigger="bg-transparent hover:bg-accent/60 hover:text-foreground text-muted-foreground relative inline-flex w-full items-center rounded-md px-2 py-2 text-sm transition-colors group/history"
+                icon={<ClockCounterClockwise size={16} className="mr-2 opacity-60" />}
+                label={
+                  <div className="flex w-full items-center gap-2">
+                    <span>History</span>
+                    <div className="text-muted-foreground ml-auto text-xs opacity-0 duration-150 group-hover/history:opacity-100">
+                      ⌘+K
+                    </div>
                   </div>
-                </div>
-              }
-              hasPopover={false}
-            />
+                }
+                hasPopover={false}
+              />
+            </div>
           </div>
         </ScrollArea>
       </SidebarContent>
-      <SidebarFooter className="border-border/40 mb-2 border-t p-3" />
+      <SidebarFooter className="border-border/40 mb-2 border-t p-3">
+        <UserMenu />
+      </SidebarFooter>
     </Sidebar>
   )
 }
