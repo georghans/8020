@@ -1,6 +1,9 @@
 "use client"
 
+import { HistoryTrigger } from "@/app/components/history/history-trigger"
 import { AppInfoTrigger } from "@/app/components/layout/app-info/app-info-trigger"
+import { ButtonNewChat } from "@/app/components/layout/button-new-chat"
+import { UserMenu } from "@/app/components/layout/user-menu"
 import { useBreakpoint } from "@/app/hooks/use-breakpoint"
 import { AppIcon } from "@/components/icons/app-icon"
 import { Button } from "@/components/ui/button"
@@ -10,7 +13,7 @@ import { Info } from "@phosphor-icons/react"
 import Link from "next/link"
 import { HeaderSidebarTrigger } from "./header-sidebar-trigger"
 
-export function Header() {
+export function Header({ hasSidebar }: { hasSidebar: boolean }) {
   const isMobile = useBreakpoint(768)
   const { user } = useUser()
 
@@ -23,17 +26,18 @@ export function Header() {
           <div className="-ml-0.5 flex flex-1 items-center gap-2 lg:-ml-2.5">
             <div className="flex flex-1 items-center gap-2">
               <Link
-                href="/c"
+                href="/"
                 className="pointer-events-auto inline-flex items-center text-xl font-medium tracking-tight"
               >
                 <AppIcon className="mr-1 size-4" />
                 {APP_NAME}
               </Link>
-              {isMobile && <HeaderSidebarTrigger />}
+              {hasSidebar && isMobile && <HeaderSidebarTrigger />}
             </div>
           </div>
+          <div />
           {!isLoggedIn ? (
-            <div className="pointer-events-auto flex items-center justify-end gap-4">
+            <div className="pointer-events-auto flex flex-1 items-center justify-end gap-4">
               <AppInfoTrigger
                 trigger={
                   <Button
@@ -53,7 +57,13 @@ export function Header() {
                 Login
               </Link>
             </div>
-          ) : null}
+          ) : (
+            <div className="pointer-events-auto flex flex-1 items-center justify-end gap-2">
+              <ButtonNewChat />
+              {!hasSidebar && <HistoryTrigger hasSidebar={hasSidebar} />}
+              <UserMenu />
+            </div>
+          )}
         </div>
       </div>
     </header>

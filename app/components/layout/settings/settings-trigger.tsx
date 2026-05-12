@@ -11,7 +11,6 @@ import {
 import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer"
 import { DropdownMenuItem } from "@/components/ui/dropdown-menu"
 import { User } from "@phosphor-icons/react"
-import { useTranslations } from "next-intl"
 import type React from "react"
 import { useState } from "react"
 import { SettingsContent } from "./settings-content"
@@ -21,7 +20,6 @@ type SettingsTriggerProps = {
 }
 
 export function SettingsTrigger({ onOpenChange }: SettingsTriggerProps) {
-  const t = useTranslations("Settings")
   const [open, setOpen] = useState(false)
   const isMobile = useBreakpoint(768)
 
@@ -33,7 +31,7 @@ export function SettingsTrigger({ onOpenChange }: SettingsTriggerProps) {
   const trigger = (
     <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
       <User className="size-4" />
-      <span>{t("title")}</span>
+      <span>Settings</span>
     </DropdownMenuItem>
   )
 
@@ -53,7 +51,7 @@ export function SettingsTrigger({ onOpenChange }: SettingsTriggerProps) {
       <DialogTrigger asChild>{trigger}</DialogTrigger>
       <DialogContent className="flex h-[80%] min-h-[480px] w-full flex-col gap-0 p-0 sm:max-w-[768px]">
         <DialogHeader className="border-border border-b px-6 py-5">
-          <DialogTitle>{t("title")}</DialogTitle>
+          <DialogTitle>Settings</DialogTitle>
         </DialogHeader>
         <SettingsContent />
       </DialogContent>

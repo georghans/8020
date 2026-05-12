@@ -11,7 +11,6 @@ import { useChatSession } from "@/lib/chat-store/session/provider"
 import { Chat } from "@/lib/chat-store/types"
 import { DotsThree, PencilSimple, Trash } from "@phosphor-icons/react"
 import { Pin, PinOff } from "lucide-react"
-import { useTranslations } from "next-intl"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { DialogDeleteChat } from "./dialog-delete-chat"
@@ -27,7 +26,6 @@ export function SidebarItemMenu({
   onStartEditing,
   onMenuOpenChange,
 }: SidebarItemMenuProps) {
-  const t = useTranslations("SidebarMenu")
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
   const router = useRouter()
   const { deleteMessages } = useMessages()
@@ -37,7 +35,7 @@ export function SidebarItemMenu({
 
   const handleConfirmDelete = async () => {
     await deleteMessages()
-    await deleteChat(chat.id, chatId ?? undefined, () => router.push("/c"))
+    await deleteChat(chat.id, chatId!, () => router.push("/"))
   }
 
   return (
@@ -69,7 +67,7 @@ export function SidebarItemMenu({
             ) : (
               <Pin size={16} className="mr-2" />
             )}
-            {chat.pinned ? t("unpin") : t("pin")}
+            {chat.pinned ? "Unpin" : "Pin"}
           </DropdownMenuItem>
           <DropdownMenuItem
             className="cursor-pointer"
@@ -80,7 +78,7 @@ export function SidebarItemMenu({
             }}
           >
             <PencilSimple size={16} className="mr-2" />
-            {t("rename")}
+            Rename
           </DropdownMenuItem>
           <DropdownMenuItem
             className="text-destructive"
@@ -92,7 +90,7 @@ export function SidebarItemMenu({
             }}
           >
             <Trash size={16} className="mr-2" />
-            {t("delete")}
+            Delete
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
@@ -100,7 +98,7 @@ export function SidebarItemMenu({
       <DialogDeleteChat
         isOpen={isDeleteDialogOpen}
         setIsOpen={setIsDeleteDialogOpen}
-        chatTitle={chat.title || t("untitledChat")}
+        chatTitle={chat.title || "Untitled chat"}
         onConfirmDelete={handleConfirmDelete}
       />
     </>

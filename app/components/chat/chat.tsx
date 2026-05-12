@@ -2,7 +2,6 @@
 
 import { ChatInput } from "@/app/components/chat-input/chat-input"
 import { Conversation } from "@/app/components/chat/conversation"
-import { HistorySearchTrigger } from "@/app/components/history/history-search-trigger"
 import { useModel } from "@/app/components/chat/use-model"
 import { useChatDraft } from "@/app/hooks/use-chat-draft"
 import { useChats } from "@/lib/chat-store/chats/provider"
@@ -14,7 +13,6 @@ import { useUser } from "@/lib/user-store/provider"
 import { cn } from "@/lib/utils"
 import { AnimatePresence, motion } from "motion/react"
 import dynamic from "next/dynamic"
-import { useTranslations } from "next-intl"
 import { redirect } from "next/navigation"
 import { useCallback, useMemo, useState } from "react"
 import { useChatCore } from "./use-chat-core"
@@ -32,7 +30,6 @@ const DialogAuth = dynamic(
 )
 
 export function Chat() {
-  const t = useTranslations("Chat")
   const { chatId } = useChatSession()
   const {
     createNewChat,
@@ -216,7 +213,7 @@ export function Chat() {
     messages.length === 0 &&
     !hasSentFirstMessageRef.current // Don't redirect if we've already sent a message in this session
   ) {
-    return redirect("/c")
+    return redirect("/")
   }
 
   const showOnboarding = !chatId && messages.length === 0
@@ -228,11 +225,6 @@ export function Chat() {
       )}
     >
       <DialogAuth open={hasDialogAuth} setOpen={setHasDialogAuth} />
-      {isAuthenticated && (
-        <div className="absolute left-4 top-3 z-40 md:left-6">
-          <HistorySearchTrigger />
-        </div>
-      )}
 
       <AnimatePresence initial={false} mode="popLayout">
         {showOnboarding ? (
@@ -251,7 +243,7 @@ export function Chat() {
             }}
           >
             <h1 className="mb-6 text-3xl font-medium tracking-tight">
-              {t("onboarding")}
+              What&apos;s on your mind?
             </h1>
           </motion.div>
         ) : (

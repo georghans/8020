@@ -3,7 +3,6 @@ import {
   useUserPreferences,
 } from "@/lib/user-preference-store/provider"
 import { cn } from "@/lib/utils"
-import { useTranslations } from "next-intl"
 import * as React from "react"
 import type { SVGProps } from "react"
 
@@ -238,7 +237,6 @@ const LayoutFullscreen = (props: SVGProps<SVGSVGElement>) => {
 }
 
 export function LayoutSettings() {
-  const t = useTranslations("Settings.Appearance")
   const { preferences, setLayout } = useUserPreferences()
 
   const handleLayoutChange = (layout: LayoutType) => {
@@ -247,7 +245,7 @@ export function LayoutSettings() {
 
   return (
     <div>
-      <h3 className="mb-3 text-sm font-medium">{t("layout.title")}</h3>
+      <h3 className="mb-3 text-sm font-medium">Layout</h3>
       <div className="grid grid-cols-2 gap-3">
         <button
           type="button"

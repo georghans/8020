@@ -1,10 +1,10 @@
 "use client"
 
+import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { type PaperlessDocument } from "@/lib/documents/api"
 import { cn } from "@/lib/utils"
 import { Calendar, Download, Eye, FileText, Hash, Pencil } from "lucide-react"
-import { useTranslations } from "next-intl"
 
 function formatDate(dateString: string): string {
   return new Date(dateString).toLocaleDateString("en-US", {
@@ -27,7 +27,6 @@ type DocumentCardProps = {
 }
 
 export function DocumentCard({ document }: DocumentCardProps) {
-  const t = useTranslations("Documents")
   const previewUrl = `/api/documents/${document.id}/thumb`
   const downloadUrl = `/api/documents/${document.id}/download`
 
@@ -68,9 +67,9 @@ export function DocumentCard({ document }: DocumentCardProps) {
         {/* Tags overlay — top of thumbnail */}
         {document.tags.length > 0 && (
           <div className="absolute top-1.5 left-1.5 right-1.5 flex flex-wrap gap-0.5">
-            {document.tags.slice(0, 3).map((tag, index) => (
+            {document.tags.slice(0, 3).map((tag) => (
               <span
-                key={`${tag.id ?? tag.name}-${index}`}
+                key={tag.id}
                 className="inline-flex items-center rounded px-1.5 py-0.5 text-[10px] font-medium leading-none"
                 style={getTagStyle(tag.color)}
               >
@@ -133,7 +132,7 @@ export function DocumentCard({ document }: DocumentCardProps) {
             className="h-6 w-6 text-muted-foreground hover:text-foreground"
             asChild
           >
-            <a href={`/documents/${document.id}`} title={t("edit")}>
+            <a href={`/documents/${document.id}`} title="Edit">
               <Pencil className="h-3 w-3" />
             </a>
           </Button>
@@ -147,7 +146,7 @@ export function DocumentCard({ document }: DocumentCardProps) {
               href={`/api/documents/${document.id}/preview`}
               target="_blank"
               rel="noreferrer"
-              title={t("preview")}
+              title="Preview"
             >
               <Eye className="h-3 w-3" />
             </a>
@@ -158,7 +157,7 @@ export function DocumentCard({ document }: DocumentCardProps) {
             className="h-6 w-6 text-muted-foreground hover:text-foreground"
             asChild
           >
-            <a href={downloadUrl} download title={t("download")}>
+            <a href={downloadUrl} download title="Download">
               <Download className="h-3 w-3" />
             </a>
           </Button>

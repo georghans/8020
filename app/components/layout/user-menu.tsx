@@ -14,14 +14,12 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip"
 import { useUser } from "@/lib/user-store/provider"
-import { useTranslations } from "next-intl"
 import { useState } from "react"
 import { AppInfoTrigger } from "./app-info/app-info-trigger"
 import { FeedbackTrigger } from "./feedback/feedback-trigger"
 import { SettingsTrigger } from "./settings/settings-trigger"
 
 export function UserMenu() {
-  const t = useTranslations("UserMenu")
   const { user } = useUser()
   const [isMenuOpen, setMenuOpen] = useState(false)
   const [isSettingsOpen, setSettingsOpen] = useState(false)
@@ -47,7 +45,7 @@ export function UserMenu() {
             </Avatar>
           </DropdownMenuTrigger>
         </TooltipTrigger>
-        <TooltipContent>{t("profile")}</TooltipContent>
+        <TooltipContent>Profile</TooltipContent>
       </Tooltip>
       <DropdownMenuContent
         className="w-56"

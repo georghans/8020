@@ -11,8 +11,6 @@ import { TanstackQueryProvider } from "@/lib/tanstack-query/tanstack-query-provi
 import { UserPreferencesProvider } from "@/lib/user-preference-store/provider"
 import { UserProvider } from "@/lib/user-store/provider"
 import { getUserProfile } from "@/lib/user/api"
-import { NextIntlClientProvider } from "next-intl"
-import { getLocale, getMessages } from "next-intl/server"
 import { ThemeProvider } from "next-themes"
 import { LayoutClient } from "./layout-client"
 
@@ -39,48 +37,44 @@ export default async function RootLayout({
   children: React.ReactNode
 }>) {
   const userProfile = await getUserProfile()
-  const locale = await getLocale()
-  const messages = await getMessages()
 
   return (
-    <html lang={locale} suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <NextIntlClientProvider locale={locale} messages={messages}>
-          <TanstackQueryProvider>
-            <LayoutClient />
-            <UserProvider initialUser={userProfile}>
-              <ModelProvider>
-                <ChatsProvider userId={userProfile?.id}>
-                  <ChatSessionProvider>
-                    <UserPreferencesProvider
-                      userId={userProfile?.id}
-                      initialPreferences={userProfile?.preferences}
+        <TanstackQueryProvider>
+          <LayoutClient />
+          <UserProvider initialUser={userProfile}>
+            <ModelProvider>
+              <ChatsProvider userId={userProfile?.id}>
+                <ChatSessionProvider>
+                  <UserPreferencesProvider
+                    userId={userProfile?.id}
+                    initialPreferences={userProfile?.preferences}
+                  >
+                    <TooltipProvider
+                      delayDuration={200}
+                      skipDelayDuration={500}
                     >
-                      <TooltipProvider
-                        delayDuration={200}
-                        skipDelayDuration={500}
+                      <ThemeProvider
+                        attribute="class"
+                        defaultTheme="light"
+                        enableSystem
+                        disableTransitionOnChange
                       >
-                        <ThemeProvider
-                          attribute="class"
-                          defaultTheme="light"
-                          enableSystem
-                          disableTransitionOnChange
-                        >
-                          <SidebarProvider defaultOpen>
-                            <Toaster position="top-center" />
-                            {children}
-                          </SidebarProvider>
-                        </ThemeProvider>
-                      </TooltipProvider>
-                    </UserPreferencesProvider>
-                  </ChatSessionProvider>
-                </ChatsProvider>
-              </ModelProvider>
-            </UserProvider>
-          </TanstackQueryProvider>
-        </NextIntlClientProvider>
+                        <SidebarProvider defaultOpen>
+                          <Toaster position="top-center" />
+                          {children}
+                        </SidebarProvider>
+                      </ThemeProvider>
+                    </TooltipProvider>
+                  </UserPreferencesProvider>
+                </ChatSessionProvider>
+              </ChatsProvider>
+            </ModelProvider>
+          </UserProvider>
+        </TanstackQueryProvider>
       </body>
     </html>
   )

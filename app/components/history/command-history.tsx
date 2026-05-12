@@ -32,7 +32,6 @@ import { useUserPreferences } from "@/lib/user-preference-store/provider"
 import { cn } from "@/lib/utils"
 import { Check, PencilSimple, TrashSimple, X } from "@phosphor-icons/react"
 import { Pin, PinOff } from "lucide-react"
-import { useTranslations } from "next-intl"
 import { useRouter } from "next/navigation"
 import { useCallback, useMemo, useRef, useState } from "react"
 import { ChatPreviewPanel } from "./chat-preview-panel"
@@ -338,7 +337,6 @@ export function CommandHistory({
   onOpenChange,
   hasPopover = true,
 }: CommandHistoryProps) {
-  const t = useTranslations("History")
   const { chatId } = useChatSession()
   const router = useRouter()
   const { preferences } = useUserPreferences()
@@ -562,7 +560,7 @@ export function CommandHistory({
       {hasPopover ? (
         <Tooltip>
           <TooltipTrigger asChild>{trigger}</TooltipTrigger>
-          <TooltipContent>{t("historyShortcut")}</TooltipContent>
+          <TooltipContent>History ⌘+K</TooltipContent>
         </Tooltip>
       ) : (
         trigger
@@ -571,8 +569,8 @@ export function CommandHistory({
       <CustomCommandDialog
         onOpenChange={handleOpenChange}
         open={isOpen}
-        title={t("chatHistoryTitle")}
-        description={t("chatHistoryDescription")}
+        title="Chat History"
+        description="Search through your past conversations"
         className={cn(
           preferences.showConversationPreviews
             ? "sm:max-w-[900px]"
@@ -580,7 +578,7 @@ export function CommandHistory({
         )}
       >
         <CommandInput
-          placeholder={t("searchHistoryPlaceholder")}
+          placeholder="Search history..."
           value={searchQuery}
           onValueChange={(value) => setSearchQuery(value)}
         />
@@ -597,7 +595,7 @@ export function CommandHistory({
               )}
             >
               {filteredChat.length === 0 && (
-                <CommandEmpty>{t("noChatHistoryFound")}</CommandEmpty>
+                <CommandEmpty>No chat history found.</CommandEmpty>
               )}
 
               {!searchQuery && pinnedChats.length > 0 && (
@@ -605,7 +603,7 @@ export function CommandHistory({
                   heading={
                     <div className="flex items-center gap-1 font-semibold break-all">
                       <Pin className="size-3" />
-                      {t("pinned")}
+                      Pinned
                     </div>
                   }
                 >

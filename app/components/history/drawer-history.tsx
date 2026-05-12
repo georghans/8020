@@ -17,7 +17,6 @@ import {
   X,
 } from "@phosphor-icons/react"
 import { Pin, PinOff } from "lucide-react"
-import { useTranslations } from "next-intl"
 import Link from "next/link"
 import { useParams } from "next/navigation"
 import React, { useCallback, useMemo, useState } from "react"
@@ -40,7 +39,6 @@ export function DrawerHistory({
   isOpen,
   setIsOpen,
 }: DrawerHistoryProps) {
-  const t = useTranslations("History")
   const { pinnedChats, togglePinned } = useChats()
   const [searchQuery, setSearchQuery] = useState("")
   const [editingId, setEditingId] = useState<string | null>(null)
@@ -299,14 +297,14 @@ export function DrawerHistory({
         <TooltipTrigger asChild>
           <DrawerTrigger asChild>{trigger}</DrawerTrigger>
         </TooltipTrigger>
-          <TooltipContent>{t("history")}</TooltipContent>
+        <TooltipContent>History</TooltipContent>
       </Tooltip>
       <DrawerContent>
         <div className="flex h-dvh max-h-[80vh] flex-col">
           <div className="border-b p-4 pb-3">
             <div className="relative">
               <Input
-                placeholder={t("searchEllipsis")}
+                placeholder="Search..."
                 className="rounded-lg py-1.5 pl-8 text-sm"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
@@ -319,7 +317,7 @@ export function DrawerHistory({
             <div className="flex flex-col space-y-6 px-4 pt-4 pb-8">
               {filteredChat.length === 0 ? (
                 <div className="text-muted-foreground py-4 text-center text-sm">
-                  {t("noChatHistoryFound")}
+                  No chat history found.
                 </div>
               ) : searchQuery ? (
                 // When searching, display a flat list without grouping
@@ -332,7 +330,7 @@ export function DrawerHistory({
                     <div className="space-y-0.5">
                       <h3 className="text-muted-foreground flex items-center gap-1 pl-2 text-sm font-medium">
                         <Pin className="size-3" />
-                        {t("pinned")}
+                        Pinned
                       </h3>
                       <div className="space-y-2">
                         {pinnedChats.map((chat) => renderChatItem(chat))}

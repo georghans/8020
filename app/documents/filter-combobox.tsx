@@ -17,7 +17,6 @@ import {
 } from "@/components/ui/popover"
 import { cn } from "@/lib/utils"
 import { Check, ChevronDown, X } from "lucide-react"
-import { useTranslations } from "next-intl"
 import { useState } from "react"
 
 type FilterOption = {
@@ -51,7 +50,6 @@ export function FilterCombobox({
   onSelect,
   placeholder = "Search...",
 }: FilterComboboxProps) {
-  const t = useTranslations("Common")
   const [open, setOpen] = useState(false)
 
   const selectedOptions = options.filter((o) => selected.includes(o.id))
@@ -66,7 +64,6 @@ export function FilterCombobox({
   }
 
   function removeOne(id: number, e: React.MouseEvent) {
-    e.preventDefault()
     e.stopPropagation()
     onSelect(selected.filter((s) => s !== id))
   }
@@ -98,13 +95,12 @@ export function FilterCombobox({
                   style={opt.color ? getTagColorStyle(opt.color) : undefined}
                 >
                   {opt.name}
-                  <span
-                    title={`Remove ${opt.name}`}
+                  <button
                     className="ml-0.5 opacity-60 hover:opacity-100"
                     onClick={(e) => removeOne(opt.id, e)}
                   >
                     <X className="h-2.5 w-2.5" />
-                  </span>
+                  </button>
                 </Badge>
               ))}
               {selected.length > 2 && (
@@ -122,13 +118,10 @@ export function FilterCombobox({
 
       <PopoverContent className="w-56 p-0" align="start" sideOffset={4}>
         <Command>
-          <CommandInput
-            placeholder={placeholder || t("searchEllipsis")}
-            className="h-8 text-xs"
-          />
+          <CommandInput placeholder={placeholder} className="h-8 text-xs" />
           <CommandList>
             <CommandEmpty className="py-4 text-center text-xs text-muted-foreground">
-              {t("noResultsFound")}
+              No results found.
             </CommandEmpty>
             <CommandGroup>
               {options.map((option) => {

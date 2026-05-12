@@ -12,11 +12,10 @@ import {
   XIcon,
 } from "@phosphor-icons/react"
 import { useState } from "react"
-import { useTranslations } from "next-intl"
 import { InteractionPreferences } from "./appearance/interaction-preferences"
+import { LayoutSettings } from "./appearance/layout-settings"
 import { ThemeSelection } from "./appearance/theme-selection"
 import { AccountManagement } from "./general/account-management"
-import { LanguageSwitcher } from "./general/language-switcher"
 import { UserProfile } from "./general/user-profile"
 import { ModelsSettings } from "./models/models-settings"
 
@@ -29,7 +28,6 @@ type TabType = "general" | "appearance" | "models"
 export function SettingsContent({
   isDrawer = false,
 }: SettingsContentProps) {
-  const t = useTranslations("Settings")
   const [activeTab, setActiveTab] = useState<TabType>("general")
 
   return (
@@ -41,7 +39,7 @@ export function SettingsContent({
     >
       {isDrawer && (
         <div className="border-border mb-2 flex items-center justify-between border-b px-4 pb-2">
-          <h2 className="text-lg font-medium">{t("title")}</h2>
+          <h2 className="text-lg font-medium">Settings</h2>
           <DrawerClose asChild>
             <Button variant="ghost" size="icon">
               <XIcon className="size-4" />
@@ -68,21 +66,21 @@ export function SettingsContent({
                   className="ml-6 flex shrink-0 items-center gap-2"
                 >
                   <GearSixIcon className="size-4" />
-                  <span>{t("tabs.general")}</span>
+                  <span>General</span>
                 </TabsTrigger>
                 <TabsTrigger
                   value="appearance"
                   className="flex shrink-0 items-center gap-2"
                 >
                   <PaintBrushIcon className="size-4" />
-                  <span>{t("tabs.appearance")}</span>
+                  <span>Appearance</span>
                 </TabsTrigger>
                 <TabsTrigger
                   value="models"
                   className="flex shrink-0 items-center gap-2"
                 >
                   <CubeIcon className="size-4" />
-                  <span>{t("tabs.models")}</span>
+                  <span>Models</span>
                 </TabsTrigger>
               </TabsList>
             </div>
@@ -90,7 +88,6 @@ export function SettingsContent({
             {/* Mobile tabs content */}
             <TabsContent value="general" className="space-y-6 px-6">
               <UserProfile />
-              <LanguageSwitcher />
               {isSupabaseEnabled && (
                 <>
                   <AccountManagement />
@@ -100,6 +97,7 @@ export function SettingsContent({
 
             <TabsContent value="appearance" className="space-y-6 px-6">
               <ThemeSelection />
+              <LayoutSettings />
               <InteractionPreferences />
             </TabsContent>
 
@@ -119,7 +117,7 @@ export function SettingsContent({
                 >
                   <div className="flex items-center gap-2">
                     <GearSixIcon className="size-4" />
-                    <span>{t("tabs.general")}</span>
+                    <span>General</span>
                   </div>
                 </TabsTrigger>
 
@@ -129,7 +127,7 @@ export function SettingsContent({
                 >
                   <div className="flex items-center gap-2">
                     <PaintBrushIcon className="size-4" />
-                    <span>{t("tabs.appearance")}</span>
+                    <span>Appearance</span>
                   </div>
                 </TabsTrigger>
 
@@ -139,7 +137,7 @@ export function SettingsContent({
                 >
                   <div className="flex items-center gap-2">
                     <CubeIcon className="size-4" />
-                    <span>{t("tabs.models")}</span>
+                    <span>Models</span>
                   </div>
                 </TabsTrigger>
               </div>
@@ -149,7 +147,6 @@ export function SettingsContent({
             <div className="flex-1 overflow-auto px-6 pt-4">
               <TabsContent value="general" className="mt-0 space-y-6">
                 <UserProfile />
-                <LanguageSwitcher />
                 {isSupabaseEnabled && (
                   <>
                     <AccountManagement />
@@ -159,6 +156,7 @@ export function SettingsContent({
 
               <TabsContent value="appearance" className="mt-0 space-y-6">
                 <ThemeSelection />
+                <LayoutSettings />
                 <InteractionPreferences />
               </TabsContent>
 

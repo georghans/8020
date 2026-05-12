@@ -4,13 +4,11 @@ import { Button } from "@/components/ui/button"
 import { signInWithGoogle } from "@/lib/api"
 import { createClient } from "@/lib/supabase/client"
 import Image from "next/image"
-import { useTranslations } from "next-intl"
 import Link from "next/link"
 import { useState } from "react"
 import { HeaderGoBack } from "../components/header-go-back"
 
 export default function LoginPage() {
-  const t = useTranslations("Auth")
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
@@ -18,7 +16,7 @@ export default function LoginPage() {
     const supabase = createClient()
 
     if (!supabase) {
-      throw new Error(t("errors.supabaseNotConfigured"))
+      throw new Error("Supabase is not configured")
     }
 
     try {
@@ -35,7 +33,7 @@ export default function LoginPage() {
       console.error("Error signing in with Google:", err)
       setError(
         (err as Error).message ||
-          t("errors.unexpected")
+          "An unexpected error occurred. Please try again."
       )
     } finally {
       setIsLoading(false)
@@ -53,7 +51,7 @@ export default function LoginPage() {
               Welcome to 8020
             </h1>
             <p className="text-muted-foreground mt-3">
-              {t("signInToIncreaseLimits")}
+              Sign in below to increase your message limits.
             </p>
           </div>
           {error && (
@@ -77,7 +75,7 @@ export default function LoginPage() {
                 className="mr-2 size-4"
               />
               <span>
-                {isLoading ? t("connecting") : t("continueWithGoogle")}
+                {isLoading ? "Connecting..." : "Continue with Google"}
               </span>
             </Button>
           </div>
@@ -89,11 +87,11 @@ export default function LoginPage() {
         <p>
           By continuing, you agree to our{" "}
           <Link href="/" className="text-foreground hover:underline">
-            {t("termsOfService")}
+            Terms of Service
           </Link>{" "}
           and{" "}
           <Link href="/" className="text-foreground hover:underline">
-            {t("privacyPolicy")}
+            Privacy Policy
           </Link>
         </p>
       </footer>

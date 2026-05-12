@@ -10,7 +10,6 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
-import { useTranslations } from "next-intl"
 
 type DialogDeleteChatProps = {
   isOpen: boolean
@@ -25,25 +24,24 @@ export function DialogDeleteChat({
   chatTitle,
   onConfirmDelete,
 }: DialogDeleteChatProps) {
-  const t = useTranslations("SidebarDialogs")
   return (
     <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>{t("deleteChatTitle")}</AlertDialogTitle>
+          <AlertDialogTitle>Delete chat?</AlertDialogTitle>
           <AlertDialogDescription>
-            {t("deleteChatDescription", { chatTitle })}
+            This will delete &quot;{chatTitle}&quot;
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>{t("cancel")}</AlertDialogCancel>
+          <AlertDialogCancel>Cancel</AlertDialogCancel>
           <AlertDialogAction
             onClick={async () => {
               setIsOpen(false)
               await onConfirmDelete()
             }}
           >
-            {t("delete")}
+            Delete
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
